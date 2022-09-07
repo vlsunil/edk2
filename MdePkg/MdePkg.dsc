@@ -189,4 +189,7 @@
   MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsicArmVirt.inf
   MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
 
+[Components.RISCV64]
+  MdePkg/Library/BaseRiscVSbiLib/BaseRiscVSbiLib.inf
+
 [BuildOptions]
