@@ -29,7 +29,6 @@
   QemuKernel.c
 
 [Packages]
-  ArmVirtPkg/ArmVirtPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
   OvmfPkg/OvmfPkg.dec
@@ -61,7 +60,7 @@
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultStopBits
 
 [Pcd]
-  gArmVirtTokenSpaceGuid.PcdTerminalTypeGuidBuffer
+  gUefiOvmfPkgTokenSpaceGuid.PcdTerminalTypeGuidBuffer
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut
 
 [Guids]
