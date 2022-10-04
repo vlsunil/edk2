@@ -18,7 +18,7 @@
 #
 # The following information is for reference only and not required by the build tools.
 #
-#  VALID_ARCHITECTURES           = IA32 X64 EBC
+#  VALID_ARCHITECTURES           = IA32 X64 EBC RISCV64
 #
 
 [Sources.IA32, Sources.X64]
@@ -33,6 +33,13 @@
 
 [Sources.X64]
   X64/SecEntry.nasm
+
+[Sources.RISCV64]
+  SecMainCommon.c
+  SecMainCommon.h
+  RiscV64/SecEntry.S
+  RiscV64/SecMain.c
+  RiscV64/SecMain.h
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -61,10 +68,16 @@
   PeiServicesLib
   CcProbeLib
 
+[LibraryClasses.RISCV64]
+  RiscVSbiLib
+
 [Ppis]
   gEfiTemporaryRamSupportPpiGuid                # PPI ALWAYS_PRODUCED
   gEfiPeiMpInitLibMpDepPpiGuid
   gEfiPeiMpInitLibUpDepPpiGuid
+
+[Ppis.RISCV64]
+  gEfiTemporaryRamDonePpiGuid                          ## PRODUCES
 
 [Pcd]
   gUefiCpuPkgTokenSpaceGuid.PcdSevEsWorkAreaBase
@@ -88,6 +101,7 @@
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfSecGhcbBackupBase
   gUefiOvmfPkgTokenSpaceGuid.PcdTdxAcceptPageSize
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfWorkAreaBase
+  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfFdBaseAddress
 
 [FeaturePcd]
   gUefiOvmfPkgTokenSpaceGuid.PcdSmmSmramRequire
