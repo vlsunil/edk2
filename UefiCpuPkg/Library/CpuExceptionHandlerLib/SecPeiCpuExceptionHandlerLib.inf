@@ -18,7 +18,7 @@
 #
 # The following information is for reference only and not required by the build tools.
 #
-#  VALID_ARCHITECTURES           = IA32 X64
+#  VALID_ARCHITECTURES           = IA32 X64 RISCV64
 #
 
 [Sources.Ia32]
@@ -36,6 +36,11 @@
   Ia32X64/CpuExceptionCommon.h
   Ia32X64/CpuExceptionCommon.c
   Ia32X64/SecPeiCpuException.c
+
+[Sources.RISCV64]
+  RiscV64/SupervisorTrapHandler.S
+  RiscV64/CpuExceptionHandlerLib.c
+  RiscV64/CpuExceptionHandlerLib.h
 
 [Packages]
   MdePkg/MdePkg.dec
