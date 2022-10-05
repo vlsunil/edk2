@@ -22,6 +22,9 @@
   Ia32X64/CpuTimerLib.c
   Ia32X64/BaseCpuTimerLib.c
 
+[Sources.RISCV64]
+  RiscV64/CpuTimerLib.c
+
 [Packages]
   MdePkg/MdePkg.dec
   UefiCpuPkg/UefiCpuPkg.dec
