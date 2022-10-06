@@ -25,6 +25,9 @@
   Ia32X64/BaseResetShutdown.c
   Ia32X64/ResetSystemLib.c
 
+[Sources.RISCV64]
+  RiscV64/ResetSystemLib.c
+
 [Packages]
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
@@ -36,3 +39,6 @@
   IoLib
   PciLib
   TimerLib
+
+[LibraryClasses.RISCV64]
+  RiscVSbiLib

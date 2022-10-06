@@ -20,12 +20,16 @@
 # The following information is for reference only and not required by the build
 # tools.
 #
-#  VALID_ARCHITECTURES           = IA32 X64
+#  VALID_ARCHITECTURES           = IA32 X64 RISCV64
 #
 
 [Sources.IA32, Sources.X64]
   Ia32X64/DxeResetShutdown.c
   Ia32X64/ResetSystemLib.c
+
+[Sources.RISCV64]
+  RiscV64/ResetSystemLib.c
+  RiscV64/DxeResetShutdown.c
 
 [Packages]
   MdeModulePkg/MdeModulePkg.dec
@@ -38,6 +42,9 @@
   IoLib
   PcdLib
   TimerLib
+
+[LibraryClasses.RISCV64]
+  RiscVSbiLib
 
 [Pcd]
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfHostBridgePciDevId ## CONSUMES
