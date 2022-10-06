@@ -285,4 +285,10 @@ PlatformInitEmuVariableNvStore (
   IN VOID  *EmuVariableNvStore
   );
 
+EFI_STATUS
+EFIAPI
+PlatformPeim (
+  VOID
+  );
+
 #endif // PLATFORM_INIT_LIB_H_
