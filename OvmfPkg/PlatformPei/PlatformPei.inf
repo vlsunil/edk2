@@ -33,6 +33,12 @@
   Ia32X64/Platform.h
   Ia32X64/IntelTdx.c
 
+[Sources.RISCV64]
+  RiscV64/Fv.c
+  RiscV64/MemDetect.c
+  RiscV64/Platform.c
+  RiscV64/Platform.h
+
 [Packages]
   EmbeddedPkg/EmbeddedPkg.dec
   MdePkg/MdePkg.dec
@@ -67,6 +73,9 @@
   QemuFwCfgS3Lib
   QemuFwCfgSimpleParserLib
   MemEncryptSevLib
+
+[LibraryClasses.RISCV64]
+  RiscVSbiLib
 
 [Pcd]
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfPeiMemFvBase
