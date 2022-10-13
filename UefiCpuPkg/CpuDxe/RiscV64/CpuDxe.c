@@ -2,6 +2,7 @@
   RISC-V CPU DXE driver.
 
   Copyright (c) 2016 - 2022, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
+  Copyright (c) 2022, Ventana Micro Systems Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -12,8 +13,41 @@
 //
 // Global Variables
 //
-STATIC BOOLEAN     mInterruptState = FALSE;
-STATIC EFI_HANDLE  mCpuHandle      = NULL;
+STATIC BOOLEAN           mInterruptState = FALSE;
+STATIC EFI_HANDLE        mCpuHandle      = NULL;
+STATIC UINTN             mBootHartId;
+RISCV_EFI_BOOT_PROTOCOL  gRiscvBootProtocol;
+
+/**
+  Get the boot hartid
+
+  @param  This                   Protocol instance structure
+  @param  BootHartId             Pointer to the Boot Hart ID variable
+
+  @retval EFI_SUCCESS            If BootHartId is returned
+  @retval EFI_INVALID_PARAMETER  Either "BootHartId" is NULL or "This" is not
+                                 a valid RISCV_EFI_BOOT_PROTOCOL instance.
+
+**/
+EFI_STATUS
+EFIAPI
+RiscvGetBootHartId (
+  IN RISCV_EFI_BOOT_PROTOCOL  *This,
+  OUT UINTN                   *BootHartId
+  )
+{
+  if ((This != &gRiscvBootProtocol) || (BootHartId == NULL)) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  *BootHartId = mBootHartId;
+  return EFI_SUCCESS;
+}
+
+RISCV_EFI_BOOT_PROTOCOL  gRiscvBootProtocol = {
+  RISCV_EFI_BOOT_PROTOCOL_LATEST_VERSION,
+  RiscvGetBootHartId
+};
 
 EFI_CPU_ARCH_PROTOCOL  gCpu = {
   CpuFlushCpuDataCache,
@@ -284,14 +318,38 @@ InitializeCpu (
   IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS  Status;
+  EFI_STATUS                  Status;
+  EFI_RISCV_FIRMWARE_CONTEXT  *FirmwareContext;
 
-  InitializeCpuExceptionHandlers(NULL);
+  GetFirmwareContextPointer (&FirmwareContext);
+  ASSERT (FirmwareContext != NULL);
+  if (FirmwareContext == NULL) {
+    DEBUG ((DEBUG_ERROR, "Failed to get the pointer of EFI_RISCV_FIRMWARE_CONTEXT\n"));
+    return EFI_NOT_FOUND;
+  }
+
+  DEBUG ((DEBUG_INFO, " %a: Firmware Context is at 0x%x.\n", __FUNCTION__, FirmwareContext));
+
+  mBootHartId = FirmwareContext->BootHartId;
+  DEBUG ((DEBUG_INFO, " %a: mBootHartId = 0x%x.\n", __FUNCTION__, mBootHartId));
+
+  InitializeCpuExceptionHandlers (NULL);
 
   //
   // Make sure interrupts are disabled
   //
   DisableInterrupts ();
+
+  //
+  // Install Boot protocol
+  //
+  Status = gBS->InstallProtocolInterface (
+                  &ImageHandle,
+                  &gRiscVEfiBootProtocolGuid,
+                  EFI_NATIVE_INTERFACE,
+                  &gRiscvBootProtocol
+                  );
+  ASSERT_EFI_ERROR (Status);
 
   //
   // Install CPU Architectural Protocol

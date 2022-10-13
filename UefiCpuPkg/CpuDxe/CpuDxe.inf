@@ -74,6 +74,9 @@
   gEfiMpServiceProtocolGuid                     ## PRODUCES
   gEfiSmmBase2ProtocolGuid                      ## SOMETIMES_CONSUMES
 
+[Protocols.RISCV64]
+  gRiscVEfiBootProtocolGuid                     ## PRODUCES
+
 [Guids]
   gIdleLoopEventGuid                            ## CONSUMES           ## Event
   gEfiVectorHandoffTableGuid                    ## SOMETIMES_CONSUMES ## SystemTable
