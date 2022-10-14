@@ -22,16 +22,16 @@
 #  VALID_ARCHITECTURES           = IA32 X64 EBC
 #
 
-[Sources]
-  Cmos.c
-  MemDetect.c
-  Platform.c
+[Sources.IA32, Sources.X64]
+  Ia32X64/Cmos.c
+  Ia32X64/MemDetect.c
+  Ia32X64/Platform.c
 
 [Sources.IA32]
-  IntelTdxNull.c
+  Ia32X64/IntelTdxNull.c
 
 [Sources.X64]
-  IntelTdx.c
+  Ia32X64/IntelTdx.c
 
 [Packages]
   EmbeddedPkg/EmbeddedPkg.dec
@@ -45,12 +45,14 @@
   DebugLib
   IoLib
   HobLib
+  PcdLib
+  PciLib
+
+[LibraryClasses.IA32, LibraryClasses.X64]
+  MtrrLib
   QemuFwCfgLib
   QemuFwCfgSimpleParserLib
   MemoryAllocationLib
-  MtrrLib
-  PcdLib
-  PciLib
   PeiHardwareInfoLib
 
 [LibraryClasses.X64]
@@ -100,5 +102,5 @@
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfFlashNvStorageVariableBase
   gUefiOvmfPkgTokenSpaceGuid.PcdCfvRawDataSize
 
-[FeaturePcd]
+[FeaturePcd.IA32, FeaturePcd.X64]
   gEfiMdeModulePkgTokenSpaceGuid.PcdDxeIplSwitchToLongMode
