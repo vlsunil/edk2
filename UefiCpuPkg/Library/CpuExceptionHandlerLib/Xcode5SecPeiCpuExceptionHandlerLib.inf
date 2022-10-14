@@ -38,9 +38,9 @@
   X64/ArchInterruptDefs.h
 
 [Sources.common]
-  CpuExceptionCommon.h
-  CpuExceptionCommon.c
-  SecPeiCpuException.c
+  Ia32X64/CpuExceptionCommon.h
+  Ia32X64/CpuExceptionCommon.c
+  Ia32X64/SecPeiCpuException.c
 
 [Packages]
   MdePkg/MdePkg.dec

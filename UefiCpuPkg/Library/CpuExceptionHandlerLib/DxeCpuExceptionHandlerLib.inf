@@ -32,11 +32,11 @@
   X64/ArchExceptionHandler.c
   X64/ArchInterruptDefs.h
 
-[Sources.common]
-  CpuExceptionCommon.h
-  CpuExceptionCommon.c
-  PeiDxeSmmCpuException.c
-  DxeException.c
+[Sources.IA32, Sources.X64]
+  Ia32X64/CpuExceptionCommon.h
+  Ia32X64/CpuExceptionCommon.c
+  Ia32X64/PeiDxeSmmCpuException.c
+  Ia32X64/DxeException.c
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdCpuStackGuard
@@ -56,8 +56,10 @@
   SerialPortLib
   PrintLib
   SynchronizationLib
-  LocalApicLib
   PeCoffGetEntryPointLib
   MemoryAllocationLib
   DebugLib
+
+[LibraryClasses.IA32, LibraryClasses.X64]
+  LocalApicLib
   VmgExitLib
