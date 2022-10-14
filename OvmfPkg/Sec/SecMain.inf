@@ -21,10 +21,12 @@
 #  VALID_ARCHITECTURES           = IA32 X64 EBC
 #
 
-[Sources]
-  SecMain.c
-  AmdSev.c
-  AmdSev.h
+[Sources.IA32, Sources.X64]
+  SecMainCommon.c
+  SecMainCommon.h
+  Ia32X64/SecMain.c
+  Ia32X64/AmdSev.c
+  Ia32X64/AmdSev.h
 
 [Sources.IA32]
   Ia32/SecEntry.nasm
@@ -42,19 +44,21 @@
   BaseLib
   DebugLib
   BaseMemoryLib
-  PeiServicesLib
   PcdLib
   CpuLib
-  UefiCpuLib
   DebugAgentLib
   IoLib
   PeCoffLib
   PeCoffGetEntryPointLib
   PeCoffExtraActionLib
   ExtractGuidedSectionLib
+  CpuExceptionHandlerLib
+
+[LibraryClasses.IA32, LibraryClasses.X64]
+  UefiCpuLib
   LocalApicLib
   MemEncryptSevLib
-  CpuExceptionHandlerLib
+  PeiServicesLib
   CcProbeLib
 
 [Ppis]
