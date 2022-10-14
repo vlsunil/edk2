@@ -18,9 +18,9 @@
   LIBRARY_CLASS                  = TimerLib
   MODULE_UNI_FILE                = BaseCpuTimerLib.uni
 
-[Sources]
-  CpuTimerLib.c
-  BaseCpuTimerLib.c
+[Sources.IA32, Sources.X64]
+  Ia32X64/CpuTimerLib.c
+  Ia32X64/BaseCpuTimerLib.c
 
 [Packages]
   MdePkg/MdePkg.dec
