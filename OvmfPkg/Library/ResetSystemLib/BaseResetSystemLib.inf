@@ -21,9 +21,9 @@
 #  VALID_ARCHITECTURES           = IA32 X64
 #
 
-[Sources]
-  BaseResetShutdown.c
-  ResetSystemLib.c
+[Sources.IA32, Sources.X64]
+  Ia32X64/BaseResetShutdown.c
+  Ia32X64/ResetSystemLib.c
 
 [Packages]
   MdeModulePkg/MdeModulePkg.dec

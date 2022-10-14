@@ -23,7 +23,7 @@
 #
 
 [Sources]
-  ResetSystemLibMicrovm.c
+  Ia32X64/ResetSystemLibMicrovm.c
 
 [Packages]
   MdeModulePkg/MdeModulePkg.dec
