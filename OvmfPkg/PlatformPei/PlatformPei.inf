@@ -22,16 +22,16 @@
 #  VALID_ARCHITECTURES           = IA32 X64 EBC
 #
 
-[Sources]
-  AmdSev.c
-  ClearCache.c
-  FeatureControl.c
-  Fv.c
-  MemDetect.c
-  MemTypeInfo.c
-  Platform.c
-  Platform.h
-  IntelTdx.c
+[Sources.IA32, Sources.X64]
+  Ia32X64/AmdSev.c
+  Ia32X64/ClearCache.c
+  Ia32X64/FeatureControl.c
+  Ia32X64/Fv.c
+  Ia32X64/MemDetect.c
+  Ia32X64/MemTypeInfo.c
+  Ia32X64/Platform.c
+  Ia32X64/Platform.h
+  Ia32X64/IntelTdx.c
 
 [Packages]
   EmbeddedPkg/EmbeddedPkg.dec
@@ -57,14 +57,16 @@
   PeiServicesLib
   PeiServicesTablePointerLib
   PeimEntryPoint
+  PcdLib
+  PlatformInitLib
+
+[LibraryClasses.IA32, LibraryClasses.X64]
+  MtrrLib
+  VmgExitLib
   QemuFwCfgLib
   QemuFwCfgS3Lib
   QemuFwCfgSimpleParserLib
-  MtrrLib
   MemEncryptSevLib
-  PcdLib
-  VmgExitLib
-  PlatformInitLib
 
 [Pcd]
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfPeiMemFvBase
@@ -99,7 +101,6 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
   gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvStoreReserved
-  gEfiMdeModulePkgTokenSpaceGuid.PcdDxeIplSwitchToLongMode
   gEfiMdeModulePkgTokenSpaceGuid.PcdUse1GPageTable
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetNxForStack
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiS3Enable
@@ -115,6 +116,9 @@
   gEfiMdePkgTokenSpaceGuid.PcdConfidentialComputingGuestAttr
   gUefiCpuPkgTokenSpaceGuid.PcdGhcbHypervisorFeatures
   gEfiMdeModulePkgTokenSpaceGuid.PcdTdxSharedBitMask
+
+[Pcd.IA32, Pcd.X64]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdDxeIplSwitchToLongMode
 
 [FixedPcd]
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfCpuidBase
