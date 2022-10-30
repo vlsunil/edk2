@@ -44,6 +44,9 @@
   MtrrLib
   UefiCpuLib
 
+[LibraryClasses.RISCV64]
+  RiscVSbiLib
+
 [Sources.IA32, Sources.X64]
   Ia32X64/CpuDxe.c
   Ia32X64/CpuDxe.h
@@ -61,6 +64,10 @@
 [Sources.X64]
   X64/CpuAsm.nasm
   X64/PagingAttribute.c
+
+[Sources.RISCV64]
+  RiscV64/CpuDxe.c
+  RiscV64/CpuDxe.h
 
 [Protocols]
   gEfiCpuArchProtocolGuid                       ## PRODUCES
@@ -83,6 +90,9 @@
   gUefiCpuPkgTokenSpaceGuid.PcdCpuStackSwitchExceptionList              ## CONSUMES
   gUefiCpuPkgTokenSpaceGuid.PcdCpuKnownGoodStackSize                    ## CONSUMES
   gEfiMdeModulePkgTokenSpaceGuid.PcdTdxSharedBitMask                    ## CONSUMES
+
+[Pcd.RISCV64]
+  gUefiCpuPkgTokenSpaceGuid.PcdCpuCoreCrystalClockFrequency             ## CONSUMES
 
 [Depex]
   TRUE
