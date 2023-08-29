@@ -250,6 +250,7 @@ MemoryPeimInitialization (
   CONST UINT64                *RegProp;
   CONST CHAR8                 *Type;
   UINT64                      CurBase, CurSize;
+  UINT64                      LowestMemBase = 0, LowestMemSize = 0;
   INT32                       Node, Prev;
   INT32                       Len;
   VOID                        *FdtPointer;
@@ -292,11 +293,10 @@ MemoryPeimInitialization (
           CurBase,
           CurBase + CurSize - 1
           ));
-
-        InitializeRamRegions (
-          CurBase,
-          CurSize
-          );
+        if ((LowestMemBase == 0) || (CurBase <= LowestMemBase)) {
+          LowestMemBase = CurBase;
+          LowestMemSize = CurSize;
+        }
       } else {
         DEBUG ((
           DEBUG_ERROR,
@@ -307,6 +307,7 @@ MemoryPeimInitialization (
     }
   }
 
+  InitializeRamRegions (LowestMemBase, LowestMemSize);
   AddReservedMemoryMap (FdtPointer);
 
   /* Make sure SEC is booting with bare mode */
