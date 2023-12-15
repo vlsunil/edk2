@@ -462,7 +462,7 @@ STATIC CONST CM_OBJ_PARSER  CmArmPciAddressMapInfoParser[] = {
 
 /** A parser for EArmObjPciInterruptMapInfo.
 */
-STATIC CONST CM_OBJ_PARSER  CmPciInterruptMapInfoParser[] = {
+STATIC CONST CM_OBJ_PARSER  CmArmPciInterruptMapInfoParser[] = {
   { "PciBus",        1,                                 "0x%x", NULL },
   { "PciDevice",     1,                                 "0x%x", NULL },
   { "PciInterrupt",  1,                                 "0x%x", NULL },
@@ -745,8 +745,8 @@ STATIC CONST CM_OBJ_PARSER_ARRAY  ArmNamespaceObjectParser[] = {
     ARRAY_SIZE (CmArmLpiInfoParser) },
   { "EArmObjPciAddressMapInfo",            CmArmPciAddressMapInfoParser,
     ARRAY_SIZE (CmArmPciAddressMapInfoParser) },
-  { "EArmObjPciInterruptMapInfo",          CmPciInterruptMapInfoParser,
-    ARRAY_SIZE (CmPciInterruptMapInfoParser) },
+  { "EArmObjPciInterruptMapInfo",          CmArmPciInterruptMapInfoParser,
+    ARRAY_SIZE (CmArmPciInterruptMapInfoParser) },
   { "EArmObjRmr",                          CmArmRmrInfoParser,
     ARRAY_SIZE (CmArmRmrInfoParser) },
   { "EArmObjMemoryRangeDescriptor",        CmArmMemoryRangeDescriptorInfoParser,
@@ -796,6 +796,96 @@ STATIC CONST CM_OBJ_PARSER  StdObjSmbiosTableInfoParser[] = {
   { "SmbiosTableData",  sizeof (SMBIOS_STRUCTURE *),        "0x%p", NULL }
 };
 
+/** A parser for EStdObjBootArchInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmStdBootArchInfoParser[] = {
+  { "BootArchFlags", 2, "0x%x", NULL }
+};
+
+/** A parser for EStdObjPowerManagementProfileInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmStdPowerManagementProfileInfoParser[] = {
+  { "PowerManagementProfile", 1, "0x%x", NULL }
+};
+
+/** A parser for EStdObjSerialConsolePortInfo,
+    EStdObjSerialDebugPortInfo and EStdObjSerialPortInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmStdSerialPortInfoParser[] = {
+  { "BaseAddress",       8, "0x%llx", NULL },
+  { "Interrupt",         4, "0x%x",   NULL },
+  { "BaudRate",          8, "0x%llx", NULL },
+  { "Clock",             4, "0x%x",   NULL },
+  { "PortSubtype",       2, "0x%x",   NULL },
+  { "BaseAddressLength", 8, "0x%llx", NULL },
+  { "AccessSize",        1, "0x%d",   NULL }
+};
+
+/** A parser for EStdObjPciConfigSpaceInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmStdPciConfigSpaceInfoParser[] = {
+  { "BaseAddress",           8,                        "0x%llx", NULL },
+  { "PciSegmentGroupNumber", 2,                        "0x%x",   NULL },
+  { "StartBusNumber",        1,                        "0x%x",   NULL },
+  { "EndBusNumber",          1,                        "0x%x",   NULL },
+  { "AddressMapToken",       sizeof (CM_OBJECT_TOKEN), "0x%p",   NULL },
+  { "InterruptMapToken",     sizeof (CM_OBJECT_TOKEN), "0x%p",   NULL },
+};
+
+/** A parser for EStdObjHypervisorVendorIdentity.
+*/
+STATIC CONST CM_OBJ_PARSER  CmStdHypervisorVendorIdParser[] = {
+  { "HypervisorVendorId", 8, "0x%llx", NULL }
+};
+
+/** A parser for EStdObjFixedFeatureFlags.
+*/
+STATIC CONST CM_OBJ_PARSER  CmStdFixedFeatureFlagsParser[] = {
+  { "Flags", 4, "0x%x", NULL }
+};
+
+/** A parser for EStdObjSmmuInterruptArray.
+*/
+STATIC CONST CM_OBJ_PARSER  CmStdGenericInterruptParser[] = {
+  { "Interrupt", 4, "0x%x", NULL },
+  { "Flags",     4, "0x%x", NULL }
+};
+
+/** A parser for EStdObjProcHierarchyInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmStdProcHierarchyInfoParser[] = {
+  { "Token",                      sizeof (CM_OBJECT_TOKEN), "0x%p", NULL },
+  { "Flags",                      4,                        "0x%x", NULL },
+  { "ParentToken",                sizeof (CM_OBJECT_TOKEN), "0x%p", NULL },
+  { "IntcToken",                  sizeof (CM_OBJECT_TOKEN), "0x%p", NULL },
+  { "NoOfPrivateResources",       4,                        "0x%x", NULL },
+  { "PrivateResourcesArrayToken", sizeof (CM_OBJECT_TOKEN), "0x%p", NULL },
+  { "LpiToken",                   sizeof (CM_OBJECT_TOKEN), "0x%p", NULL },
+  { "OverrideNameUidEnabled",     1,                        "%d",   NULL },
+  { "OverrideName",               2,                        "0x%x", NULL },
+  { "OverrideUid",                4,                        "0x%x", NULL }
+};
+
+/** A parser for EStdObjPciAddressMapInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmStdPciAddressMapInfoParser[] = {
+  { "SpaceCode",   1, "%d",     NULL },
+  { "PciAddress",  8, "0x%llx", NULL },
+  { "CpuAddress",  8, "0x%llx", NULL },
+  { "AddressSize", 8, "0x%llx", NULL },
+};
+
+/** A parser for EStdObjPciInterruptMapInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmStdPciInterruptMapInfoParser[] = {
+  { "PciBus",        1,                                 "0x%x", NULL },
+  { "PciDevice",     1,                                 "0x%x", NULL },
+  { "PciInterrupt",  1,                                 "0x%x", NULL },
+  { "IntcInterrupt", sizeof (CM_STD_GENERIC_INTERRUPT),
+    NULL, NULL, CmStdGenericInterruptParser,
+    ARRAY_SIZE (CmStdGenericInterruptParser) },
+};
+
 /** A parser for Standard namespace objects.
 */
 STATIC CONST CM_OBJ_PARSER_ARRAY  StdNamespaceObjectParser[] = {
@@ -805,7 +895,100 @@ STATIC CONST CM_OBJ_PARSER_ARRAY  StdNamespaceObjectParser[] = {
     ARRAY_SIZE (StdObjAcpiTableInfoParser) },
   { "EStdObjSmbiosTableList", StdObjSmbiosTableInfoParser,
     ARRAY_SIZE (StdObjSmbiosTableInfoParser) },
+  { "EStdObjBootArchInfo",                 CmStdBootArchInfoParser,
+    ARRAY_SIZE (CmStdBootArchInfoParser) },
+  { "EStdObjPowerManagementProfileInfo",   CmStdPowerManagementProfileInfoParser,
+    ARRAY_SIZE (CmStdPowerManagementProfileInfoParser) },
+  { "EStdObjSerialConsolePortInfo",        CmStdSerialPortInfoParser,
+    ARRAY_SIZE (CmStdSerialPortInfoParser) },
+  { "EStdObjSerialDebugPortInfo",          CmStdSerialPortInfoParser,
+    ARRAY_SIZE (CmStdSerialPortInfoParser) },
+  { "EStdObjPciConfigSpaceInfo",           CmStdPciConfigSpaceInfoParser,
+    ARRAY_SIZE (CmStdPciConfigSpaceInfoParser) },
+  { "EStdObjHypervisorVendorIdentity",     CmStdHypervisorVendorIdParser,
+    ARRAY_SIZE (CmStdHypervisorVendorIdParser) },
+  { "EStdObjFixedFeatureFlags",            CmStdFixedFeatureFlagsParser,
+    ARRAY_SIZE (CmStdFixedFeatureFlagsParser) },
+  { "EStdObjProcHierarchyInfo",            CmStdProcHierarchyInfoParser,
+    ARRAY_SIZE (CmStdProcHierarchyInfoParser) },
+  { "EStdObjSerialPortInfo",               CmStdSerialPortInfoParser,
+    ARRAY_SIZE (CmStdSerialPortInfoParser) },
+  { "EStdObjLpiInfo",                     NULL,                                  0                                },
+  { "EStdObjPciAddressMapInfo",            CmStdPciAddressMapInfoParser,
+    ARRAY_SIZE (CmStdPciAddressMapInfoParser) },
+  { "EStdObjPciInterruptMapInfo",          CmStdPciInterruptMapInfoParser,
+    ARRAY_SIZE (CmStdPciInterruptMapInfoParser) },
   { "EStdObjMax",             NULL,                       0}
+};
+
+/** A parser for ERiscVObjRintcInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVRintcInfoParser[] = {
+  { "Version",                       1,                        "0x%x",   NULL },
+  { "Reserved",                      1,                        "0x%x",   NULL },
+  { "Flags",                         4,                        "0x%x",   NULL },
+  { "HartId",                        8,                        "0x%llx", NULL },
+  { "AcpiProcessorUid",              4,                        "0x%x",   NULL },
+  { "ExtIntCId",                     4,                        "0x%x",   NULL },
+  { "ImsicBaseAddress",              8,                        "0x%llx", NULL },
+  { "ImsicSize",                     4,                        "0x%llx", NULL }
+};
+
+/** A parser for ERiscVObjImsicInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVImsicInfoParser[] = {
+  { "Version",                       1,                        "0x%x",   NULL },
+  { "Reserved",                      1,                        "0x%x",   NULL },
+  { "Flags",                         4,                        "0x%x",   NULL },
+  { "NumSmodeIds",                   2,                        "0x%x",   NULL },
+  { "NumGmodeIds",                   2,                        "0x%x",   NULL },
+  { "GuestIndexBits",                1,                        "0x%x",   NULL },
+  { "HartIndexBits",                 1,                        "0x%x",   NULL },
+  { "GroupIndexBits",                1,                        "0x%x",   NULL },
+  { "GroupIndexShift",               1,                        "0x%x",   NULL },
+};
+
+/** A parser for ERiscVObjAplicInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVAplicInfoParser[] = {
+  { "Version",                       1,                        "0x%x",   NULL },
+  { "AplicId",                       1,                        "0x%x",   NULL },
+  { "Flags",                         4,                        "0x%x",   NULL },
+  { "HardwareId",                    8,                        "0x%lx",  NULL },
+  { "NumIdcs",                       2,                        "0x%x",   NULL },
+  { "NumSources",                    2,                        "0x%x",   NULL },
+  { "GsiBase",                       4,                        "0x%x",   NULL },
+  { "AplicAddress",                  8,                        "0x%lx",  NULL },
+  { "AplicSize",                     4,                        "0x%x",   NULL },
+};
+
+/** A parser for ERiscVObjPlicInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVPlicInfoParser[] = {
+  { "Version",                       1,                        "0x%x",   NULL },
+  { "PlicId",                        1,                        "0x%x",   NULL },
+  { "HardwareId",                    8,                        "0x%lx",  NULL },
+  { "NumIrqs",                       2,                        "0x%x",   NULL },
+  { "MaxPriority",                   2,                        "0x%x",   NULL },
+  { "Flags",                         4,                        "0x%x",   NULL },
+  { "PlicSize",                      4,                        "0x%x",   NULL },
+  { "PlicAddress",                   8,                        "0x%lx",  NULL },
+  { "GsiBase",                       4,                        "0x%x",   NULL },
+};
+
+/** A parser for RiscV namespace objects.
+*/
+STATIC CONST CM_OBJ_PARSER_ARRAY  RiscVNamespaceObjectParser[] = {
+  { "ERiscVObjReserved",                     NULL,                                  0                                },
+  { "ERiscVObjRintcInfo",                    CmRiscVRintcInfoParser,             ARRAY_SIZE (CmRiscVRintcInfoParser) },
+  { "ERiscVObjImsicInfo",                    CmRiscVImsicInfoParser,             ARRAY_SIZE (CmRiscVImsicInfoParser) },
+  { "ERiscVObjAplicInfo",                    CmRiscVAplicInfoParser,             ARRAY_SIZE (CmRiscVAplicInfoParser) },
+  { "ERiscVObjPlicInfo",                     CmRiscVPlicInfoParser,              ARRAY_SIZE (CmRiscVPlicInfoParser)  },
+  { "ERiscVObjRhctInfo",                     NULL,                                  0                                },
+  { "ERiscVObjIsaStringInfo",                NULL,                                  0                                },
+  { "ERiscVObjTimerInfo",                    NULL,                                  0                                },
+  { "ERiscVObjHartInfo",                     NULL,                                  0                                },
+  { "ERiscVObjMax",                          NULL,                                  0                                },
 };
 
 /** Print string data.
@@ -1070,6 +1253,7 @@ ParseCmObjDesc (
   NameSpaceId = GET_CM_NAMESPACE_ID (CmObjDesc->ObjectId);
   ObjId       = GET_CM_OBJECT_ID (CmObjDesc->ObjectId);
 
+DEBUG((DEBUG_INFO, "%a: NameSpaceId=%d,ObjId=%d\n", __func__, NameSpaceId, ObjId));
   switch (NameSpaceId) {
     case EObjNameSpaceStandard:
       if (ObjId >= EStdObjMax) {
@@ -1099,6 +1283,20 @@ ParseCmObjDesc (
 
       ParserArray = &ArmNamespaceObjectParser[ObjId];
       break;
+    case EObjNameSpaceRiscV:
+      if (ObjId >= ERiscVObjMax) {
+        ASSERT (0);
+        return;
+      }
+
+      if (ObjId >= ARRAY_SIZE (RiscVNamespaceObjectParser)) {
+        DEBUG ((DEBUG_ERROR, "ObjId 0x%x is missing from the RiscVNamespaceObjectParser array\n", ObjId));
+        ASSERT (0);
+        return;
+      }
+
+      ParserArray = &RiscVNamespaceObjectParser[ObjId];
+      break;
     default:
       // Not supported
       DEBUG ((DEBUG_ERROR, "NameSpaceId 0x%x, ObjId 0x%x is not supported by the parser\n", NameSpaceId, ObjId));
@@ -1110,6 +1308,7 @@ ParseCmObjDesc (
   RemainingSize = CmObjDesc->Size;
   Offset        = 0;
 
+DEBUG((DEBUG_INFO, "%a: ObjectCount=%d\n", __func__, ObjectCount));
   for (ObjIndex = 0; ObjIndex < ObjectCount; ObjIndex++) {
     DEBUG ((
       DEBUG_INFO,
@@ -1130,6 +1329,7 @@ ParseCmObjDesc (
         &RemainingSize,
         1
         );
+DEBUG((DEBUG_INFO, "%a: RemainingSize=%d,  CmObjDesc->Size=%d\n", __func__, RemainingSize, CmObjDesc->Size));
       if ((RemainingSize > CmObjDesc->Size) ||
           (RemainingSize < 0))
       {
@@ -1141,5 +1341,6 @@ ParseCmObjDesc (
     }
   } // for
 
+DEBUG((DEBUG_INFO, "%a: RemainingSize = %d\n", __func__, RemainingSize));
   ASSERT (RemainingSize == 0);
 }

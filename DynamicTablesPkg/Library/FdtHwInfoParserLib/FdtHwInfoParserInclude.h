@@ -10,7 +10,7 @@
 
 #include <Base.h>
 #include <libfdt.h>
-#include <Library/ArmLib.h>
+//#include <Library/ArmLib.h>
 #include <Library/DebugLib.h>
 #include <Library/MemoryAllocationLib.h>
 

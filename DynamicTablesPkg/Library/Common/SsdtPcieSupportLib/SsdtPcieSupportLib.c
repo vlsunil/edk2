@@ -53,7 +53,7 @@
 EFI_STATUS
 EFIAPI
 GeneratePciSlots (
-  IN      CONST CM_ARM_PCI_CONFIG_SPACE_INFO  *PciInfo,
+  IN      CONST CM_STD_PCI_CONFIG_SPACE_INFO  *PciInfo,
   IN      CONST MAPPING_TABLE                 *MappingTable,
   IN            UINT32                        Uid,
   IN  OUT       AML_OBJECT_NODE_HANDLE        PciNode
@@ -132,7 +132,7 @@ GeneratePciSlots (
 EFI_STATUS
 EFIAPI
 AddOscMethod (
-  IN      CONST CM_ARM_PCI_CONFIG_SPACE_INFO  *PciInfo,
+  IN      CONST CM_STD_PCI_CONFIG_SPACE_INFO  *PciInfo,
   IN  OUT   AML_OBJECT_NODE_HANDLE            PciNode
   )
 {

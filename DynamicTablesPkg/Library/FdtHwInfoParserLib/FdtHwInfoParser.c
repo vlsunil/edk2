@@ -6,11 +6,8 @@
 **/
 
 #include "FdtHwInfoParser.h"
-#include "BootArch/ArmBootArchParser.h"
-#include "GenericTimer/ArmGenericTimerParser.h"
-#include "Gic/ArmGicDispatcher.h"
-#include "Pci/ArmPciConfigSpaceParser.h"
-#include "Serial/ArmSerialPortParser.h"
+#include "Pci/PciConfigSpaceParser.h"
+#include "Serial/SerialPortParser.h"
 
 /** Ordered table of parsers/dispatchers.
 
@@ -22,10 +19,7 @@
   Device Tree but calling other parsers.
 */
 STATIC CONST FDT_HW_INFO_PARSER_FUNC  HwInfoParserTable[] = {
-  ArmBootArchInfoParser,
-  ArmGenericTimerInfoParser,
-  ArmGicDispatcher,
-  ArmPciConfigInfoParser,
+  PciConfigInfoParser,
   SerialPortDispatcher
 };
 
@@ -80,7 +74,7 @@ MainDispatcher (
     }
   } // for
 
-  return EFI_SUCCESS;
+  return ArchDispatcher (FdtParserHandle, FdtBranch);
 }
 
 /** Initialise the HwInfoParser.

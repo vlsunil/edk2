@@ -1065,7 +1065,7 @@ typedef struct CmArmPciInterruptMapInfo {
   Cf Devicetree Specification - Release v0.3
   s2.4.3 "Interrupt Nexus Properties": "parent interrupt specifier"
   */
-  CM_ARM_GENERIC_INTERRUPT    IntcInterrupt;
+  CM_ARM_GENERIC_INTERRUPT    GicCInterrupt;
 } CM_ARM_PCI_INTERRUPT_MAP_INFO;
 
 /** A structure that describes the

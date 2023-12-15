@@ -1,0 +1,71 @@
+#include <FdtHwInfoParserInclude.h>
+#include "FdtUtility.h"
+
+/** Get the interrupt Id of an interrupt described in a fdt.
+
+  Data must describe a GIC interrupt. A GIC interrupt is on at least
+  3 UINT32 cells.
+  This function DOES NOT SUPPORT extended SPI range and extended PPI range.
+
+  @param [in]  Data   Pointer to the first cell of an "interrupts" property.
+
+  @retval  The interrupt id.
+**/
+UINT32
+EFIAPI
+FdtGetInterruptId (
+  UINT32 CONST  *Data
+  )
+{
+  UINT32  IrqId;
+
+  ASSERT (Data != NULL);
+
+  IrqId   = fdt32_to_cpu (Data[RISCV_IRQ_NUMBER_OFFSET]);
+
+  return IrqId;
+}
+
+/** Get the ACPI interrupt flags of an interrupt described in a fdt.
+
+  Data must describe a GIC interrupt. A GIC interrupt is on at least
+  3 UINT32 cells.
+
+  PPI interrupt cpu mask on bits [15:8] are ignored.
+
+  @param [in]  Data   Pointer to the first cell of an "interrupts" property.
+
+  @retval  The interrupt flags (for ACPI).
+**/
+UINT32
+EFIAPI
+FdtGetInterruptFlags (
+  UINT32 CONST  *Data
+  )
+{
+  UINT32  IrqFlags;
+  UINT32  AcpiIrqFlags;
+
+  ASSERT (Data != NULL);
+
+  IrqFlags = fdt32_to_cpu (Data[RISCV_IRQ_FLAGS_OFFSET]);
+
+DEBUG((DEBUG_INFO, "%a: RISC-V: IrqFlags=0x%x\n", __func__, IrqFlags));
+  AcpiIrqFlags  = DT_IRQ_IS_EDGE_TRIGGERED (IrqFlags) ? BIT0 : 0;
+  AcpiIrqFlags |= DT_IRQ_IS_ACTIVE_LOW (IrqFlags) ? BIT1 : 0;
+
+  return AcpiIrqFlags;
+}
+
+EFI_STATUS
+EFIAPI
+FdtGetIntcAddressCells (
+  IN  CONST VOID *Fdt,
+  IN        INT32 Node,
+  OUT       INT32 *AddressCells, OPTIONAL
+  OUT       INT32     *SizeCells       OPTIONAL
+  )
+{
+  *AddressCells = 0;
+  return EFI_SUCCESS;
+}

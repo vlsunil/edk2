@@ -60,4 +60,11 @@ EFI_STATUS
   IN        INT32                     FdtBranch
   );
 
+EFI_STATUS
+EFIAPI
+ArchDispatcher (
+  IN  CONST FDT_HW_INFO_PARSER_HANDLE  FdtParserHandle,
+  IN        INT32                      FdtBranch
+  );
+
 #endif // FDT_HW_INFO_PARSER_H_

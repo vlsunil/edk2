@@ -13,6 +13,7 @@
 #define CONFIGURATION_MANAGER_OBJECT_H_
 
 #include <ArmNameSpaceObjects.h>
+#include <RiscVNameSpaceObjects.h>
 #include <StandardNameSpaceObjects.h>
 
 #pragma pack(1)
@@ -107,6 +108,7 @@ typedef UINT32 CM_OBJECT_ID;
 typedef enum ObjectNameSpaceID {
   EObjNameSpaceStandard,      ///< Standard Objects Namespace
   EObjNameSpaceArm,           ///< ARM Objects Namespace
+  EObjNameSpaceRiscV,         ///< RISC-V Objects Namespace
   EObjNameSpaceOem = 0x8,     ///< OEM Objects Namespace
   EObjNameSpaceMax
 } EOBJECT_NAMESPACE_ID;
@@ -181,6 +183,16 @@ typedef struct CmObjDescriptor {
 **/
 #define CREATE_CM_ARM_OBJECT_ID(ObjectId) \
           (CREATE_CM_OBJECT_ID (EObjNameSpaceArm, ObjectId))
+
+/** This macro returns a Configuration Manager Object ID
+    in the RISC-V Object Namespace.
+
+  @param [in] ObjectId    The Object ID.
+
+  @retval Returns an RISC-V Configuration Manager Object ID.
+**/
+#define CREATE_CM_RISCV_OBJECT_ID(ObjectId) \
+          (CREATE_CM_OBJECT_ID (EObjNameSpaceRiscV, ObjectId))
 
 /** This macro returns a Configuration Manager Object ID
     in the OEM Object Namespace.
