@@ -63,6 +63,10 @@
   GCC:  *_*_*_DLINK_FLAGS = -z common-page-size=0x1000
   MSFT: *_*_*_DLINK_FLAGS = /ALIGN:4096
 
+!ifdef DYNAMIC_TABLES_FRAMEWORK
+  *_*_*_PLATFORM_FLAGS = -DDYNAMIC_TABLES_FRAMEWORK
+!endif
+
 ################################################################################
 #
 # Library Class section - list of all Library Classes needed by this Platform.
@@ -74,6 +78,10 @@
 !include OvmfPkg/RiscVVirt/RiscVVirt.dsc.inc
 
 !include MdePkg/MdeLibs.dsc.inc
+
+!ifdef DYNAMIC_TABLES_FRAMEWORK
+!include DynamicTablesPkg/DynamicTables.dsc.inc
+!endif
 
 [LibraryClasses.common]
   # Virtio Support
@@ -102,6 +110,10 @@
   PeiHardwareInfoLib|OvmfPkg/Library/HardwareInfoLib/PeiHardwareInfoLib.inf
   PlatformHookLib|MdeModulePkg/Library/BasePlatformHookLibNull/BasePlatformHookLibNull.inf
   ImagePropertiesRecordLib|MdeModulePkg/Library/ImagePropertiesRecordLib/ImagePropertiesRecordLib.inf
+!ifdef DYNAMIC_TABLES_FRAMEWORK
+  HwInfoParserLib|DynamicTablesPkg/Library/FdtHwInfoParserLib/FdtHwInfoParserLib.inf
+  DynamicPlatRepoLib|DynamicTablesPkg/Library/Common/DynamicPlatRepoLib/DynamicPlatRepoLib.inf
+!endif
 
 !if $(TPM2_ENABLE) == TRUE
   Tpm2CommandLib|SecurityPkg/Library/Tpm2CommandLib/Tpm2CommandLib.inf
@@ -499,9 +511,13 @@
   #
   # ACPI Support
   #
+!ifndef DYNAMIC_TABLES_FRAMEWORK
   OvmfPkg/PlatformHasAcpiDtDxe/PlatformHasAcpiDtDxe.inf
   MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
   OvmfPkg/AcpiPlatformDxe/AcpiPlatformDxe.inf {
     <LibraryClasses>
       NULL|OvmfPkg/Fdt/FdtPciPcdProducerLib/FdtPciPcdProducerLib.inf
   }
+!else
+  OvmfPkg/RiscVVirt/RiscVVirtCfgMgrDxe/ConfigurationManagerDxe.inf
+!endif

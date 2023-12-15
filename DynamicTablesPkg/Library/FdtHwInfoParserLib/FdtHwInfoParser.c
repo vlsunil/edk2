@@ -6,11 +6,8 @@
 **/
 
 #include "FdtHwInfoParser.h"
-#include "BootArch/ArmBootArchParser.h"
-#include "GenericTimer/ArmGenericTimerParser.h"
-#include "Gic/ArmGicDispatcher.h"
-#include "Pci/ArmPciConfigSpaceParser.h"
-#include "Serial/ArmSerialPortParser.h"
+#include "Pci/PciConfigSpaceParser.h"
+#include "Serial/SerialPortParser.h"
 
 /** Ordered table of parsers/dispatchers.
 
@@ -22,10 +19,7 @@
   Device Tree but calling other parsers.
 */
 STATIC CONST FDT_HW_INFO_PARSER_FUNC  HwInfoParserTable[] = {
-  ArmBootArchInfoParser,
-  ArmGenericTimerInfoParser,
-  ArmGicDispatcher,
-  ArmPciConfigInfoParser,
+  PciConfigInfoParser,
   SerialPortDispatcher
 };
 
@@ -67,6 +61,22 @@ MainDispatcher (
 
   for (Index = 0; Index < ARRAY_SIZE (HwInfoParserTable); Index++) {
     Status = HwInfoParserTable[Index](
+                                      FdtParserHandle,
+                                      FdtBranch
+                                      );
+    if (EFI_ERROR (Status)  &&
+        (Status != EFI_NOT_FOUND))
+    {
+      // If EFI_NOT_FOUND, the parser didn't find information in the DT.
+      // Don't trigger an error.
+      ASSERT (0);
+      return Status;
+    }
+  } // for
+
+  // Parse ARCH specific
+  for (Index = 0; Index < ARRAY_SIZE (ArchHwInfoParserTable); Index++) {
+    Status = ArchHwInfoParserTable[Index](
                                       FdtParserHandle,
                                       FdtBranch
                                       );

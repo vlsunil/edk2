@@ -286,7 +286,7 @@ AddMultipleCmObjWithCmObjRef (
     goto exit_handler;
   }
 
-  CmObjRef.ObjectId = CREATE_CM_ARM_OBJECT_ID (EArmObjCmRef);
+  CmObjRef.ObjectId = CREATE_CM_STD_OBJECT_ID (EArmObjCmRef);
   CmObjRef.Data     = TokenTable;
   CmObjRef.Count    = CmObjDesc->Count;
   CmObjRef.Size     = TokenTableSize;
