@@ -14,9 +14,13 @@
   MODULE_TYPE    = DXE_DRIVER
   LIBRARY_CLASS  = SsdtSerialPortFixupLib
 
-[Sources]
-  SsdtSerialPortFixupLib.c
-  SsdtSerialPortTemplate.asl
+[Sources.AARCH64]
+  Arm/SsdtSerialPortFixupLib.c
+  Arm/SsdtSerialPortTemplate.asl
+
+[Sources.RISCV64]
+  RiscV/SsdtSerialPortFixupLib.c
+  RiscV/SsdtSerialPortTemplate.asl
 
 [Packages]
   MdePkg/MdePkg.dec

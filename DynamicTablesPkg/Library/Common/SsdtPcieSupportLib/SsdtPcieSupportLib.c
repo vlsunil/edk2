@@ -41,7 +41,6 @@
   used. It should be possible to enumerate them, but this is additional
   information.
 
-  @param [in]       PciInfo       Pci device information.
   @param [in]       MappingTable  The mapping table structure.
   @param [in]       Uid           Unique Id of the Pci device.
   @param [in, out]  PciNode       Pci node to amend.
@@ -53,7 +52,6 @@
 EFI_STATUS
 EFIAPI
 GeneratePciSlots (
-  IN      CONST CM_ARM_PCI_CONFIG_SPACE_INFO  *PciInfo,
   IN      CONST MAPPING_TABLE                 *MappingTable,
   IN            UINT32                        Uid,
   IN  OUT       AML_OBJECT_NODE_HANDLE        PciNode
@@ -122,7 +120,6 @@ GeneratePciSlots (
   The _OSC method is provided as an AML blob. The blob is
   parsed and attached at the end of the PciNode list of variable elements.
 
-  @param [in]       PciInfo     Pci device information.
   @param [in, out]  PciNode     Pci node to amend.
 
   @retval EFI_SUCCESS             The function completed successfully.
@@ -132,7 +129,6 @@ GeneratePciSlots (
 EFI_STATUS
 EFIAPI
 AddOscMethod (
-  IN      CONST CM_ARM_PCI_CONFIG_SPACE_INFO  *PciInfo,
   IN  OUT   AML_OBJECT_NODE_HANDLE            PciNode
   )
 {

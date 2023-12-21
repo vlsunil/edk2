@@ -15,14 +15,20 @@
   LIBRARY_CLASS  = DynamicPlatRepoLib
 
 [Sources]
-  CmObjectTokenFixer.c
-  CmObjectTokenFixer.h
-  DynamicPlatRepo.c
-  DynamicPlatRepoInternal.h
   TokenGenerator.c
   TokenGenerator.h
   TokenMapper.c
   TokenMapper.h
+
+[Sources.AARCH64]
+  Arm/CmObjectTokenFixer.c
+  Arm/CmObjectTokenFixer.h
+  Arm/DynamicPlatRepo.c
+  Arm/DynamicPlatRepoInternal.h
+
+[Sources.RISCV64]
+  RiscV/DynamicPlatRepo.c
+  RiscV/DynamicPlatRepoInternal.h
 
 [Packages]
   MdePkg/MdePkg.dec

@@ -770,6 +770,294 @@ STATIC CONST CM_OBJ_PARSER_ARRAY  ArmNamespaceObjectParser[] = {
   { "EArmObjMax",                          NULL,                                  0                                },
 };
 
+/** A parser for ERiscVObjPowerManagementProfileInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVPowerManagementProfileInfoParser[] = {
+  { "PowerManagementProfile", 1, "0x%x", NULL }
+};
+
+/** A parser for ERiscVObjRintcInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVRintcInfoParser[] = {
+  { "Version",                       1,                        "0x%x",   NULL },
+  { "Reserved",                      1,                        "0x%x",   NULL },
+  { "Flags",                         4,                        "0x%x",   NULL },
+  { "HartId",                        8,                        "0x%llx", NULL },
+  { "AcpiProcessorUid",              4,                        "0x%x",   NULL },
+  { "ExtIntCId",                     4,                        "0x%x",   NULL },
+  { "ImsicBaseAddress",              8,                        "0x%llx", NULL },
+  { "ImsicSize",                     4,                        "0x%llx", NULL },
+  { "CpcToken",                      sizeof (CM_OBJECT_TOKEN), "0x%p",   NULL },
+  { "EtToken",                       sizeof (CM_OBJECT_TOKEN), "0x%p",   NULL }
+};
+
+/** A parser for ERiscVObjImsicInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVImsicInfoParser[] = {
+  { "Version",                       1,                        "0x%x",   NULL },
+  { "Reserved",                      1,                        "0x%x",   NULL },
+  { "Flags",                         4,                        "0x%x",   NULL },
+  { "NumSmodeIds",                   2,                        "0x%x",   NULL },
+  { "NumGmodeIds",                   2,                        "0x%x",   NULL },
+  { "GuestIndexBits",                1,                        "0x%x",   NULL },
+  { "HartIndexBits",                 1,                        "0x%x",   NULL },
+  { "GroupIndexBits",                1,                        "0x%x",   NULL },
+  { "GroupIndexShift",               1,                        "0x%x",   NULL },
+};
+
+/** A parser for ERiscVObjAplicInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVAplicInfoParser[] = {
+  { "Version",                       1,                        "0x%x",   NULL },
+  { "AplicId",                       1,                        "0x%x",   NULL },
+  { "Flags",                         4,                        "0x%x",   NULL },
+  { "HardwareId",                    8,                        "0x%lx",  NULL },
+  { "NumIdcs",                       2,                        "0x%x",   NULL },
+  { "NumSources",                    2,                        "0x%x",   NULL },
+  { "GsiBase",                       4,                        "0x%x",   NULL },
+  { "AplicAddress",                  8,                        "0x%lx",  NULL },
+  { "AplicSize",                     4,                        "0x%x",   NULL },
+};
+
+/** A parser for ERiscVObjPlicInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVPlicInfoParser[] = {
+  { "Version",                       1,                        "0x%x",   NULL },
+  { "PlicId",                        1,                        "0x%x",   NULL },
+  { "HardwareId",                    8,                        "0x%lx",  NULL },
+  { "NumIrqs",                       2,                        "0x%x",   NULL },
+  { "MaxPriority",                   2,                        "0x%x",   NULL },
+  { "Flags",                         4,                        "0x%x",   NULL },
+  { "PlicSize",                      4,                        "0x%x",   NULL },
+  { "PlicAddress",                   8,                        "0x%lx",  NULL },
+  { "GsiBase",                       4,                        "0x%x",   NULL },
+};
+
+/** A parser for ERiscVObjSerialConsolePortInfo,
+    ERiscVObjSerialDebugPortInfo and ERiscVObjSerialPortInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVSerialPortInfoParser[] = {
+  { "BaseAddress",       8, "0x%llx", NULL },
+  { "Interrupt",         4, "0x%x",   NULL },
+  { "BaudRate",          8, "0x%llx", NULL },
+  { "Clock",             4, "0x%x",   NULL },
+  { "PortSubtype",       2, "0x%x",   NULL },
+  { "BaseAddressLength", 8, "0x%llx", NULL },
+  { "AccessSize",        1, "0x%d",   NULL }
+};
+
+/** A parser for ERiscVObjPciConfigSpaceInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVPciConfigSpaceInfoParser[] = {
+  { "BaseAddress",           8,                        "0x%llx", NULL },
+  { "PciSegmentGroupNumber", 2,                        "0x%x",   NULL },
+  { "StartBusNumber",        1,                        "0x%x",   NULL },
+  { "EndBusNumber",          1,                        "0x%x",   NULL },
+  { "AddressMapToken",       sizeof (CM_OBJECT_TOKEN), "0x%p",   NULL },
+  { "InterruptMapToken",     sizeof (CM_OBJECT_TOKEN), "0x%p",   NULL },
+};
+
+/** A parser for ERiscVObjHypervisorVendorIdentity.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVHypervisorVendorIdParser[] = {
+  { "HypervisorVendorId", 8, "0x%llx", NULL }
+};
+
+/** A parser for ERiscVObjFixedFeatureFlags.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVFixedFeatureFlagsParser[] = {
+  { "Flags", 4, "0x%x", NULL }
+};
+
+/** A parser for ERiscVObjSmmuInterruptArray.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVGenericInterruptParser[] = {
+  { "Interrupt", 4, "0x%x", NULL },
+  { "Flags",     4, "0x%x", NULL }
+};
+
+/** A parser for ERiscVObjProcHierarchyInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVProcHierarchyInfoParser[] = {
+  { "Token",                      sizeof (CM_OBJECT_TOKEN), "0x%p", NULL },
+  { "Flags",                      4,                        "0x%x", NULL },
+  { "ParentToken",                sizeof (CM_OBJECT_TOKEN), "0x%p", NULL },
+  { "GicCToken",                  sizeof (CM_OBJECT_TOKEN), "0x%p", NULL },
+  { "NoOfPrivateResources",       4,                        "0x%x", NULL },
+  { "PrivateResourcesArrayToken", sizeof (CM_OBJECT_TOKEN), "0x%p", NULL },
+  { "LpiToken",                   sizeof (CM_OBJECT_TOKEN), "0x%p", NULL },
+  { "OverrideNameUidEnabled",     1,                        "%d",   NULL },
+  { "OverrideName",               2,                        "0x%x", NULL },
+  { "OverrideUid",                4,                        "0x%x", NULL }
+};
+
+/** A parser for ERiscVObjCmRef.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVObjRefParser[] = {
+  { "ReferenceToken", sizeof (CM_OBJECT_TOKEN), "0x%p", NULL }
+};
+
+/** A parser for ERiscVObjLpiInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVLpiInfoParser[] = {
+  { "MinResidency",             4,                                               "0x%x",   NULL        },
+  { "WorstCaseWakeLatency",     4,                                               "0x%x",   NULL        },
+  { "Flags",                    4,                                               "0x%x",   NULL        },
+  { "ArchFlags",                4,                                               "0x%x",   NULL        },
+  { "ResCntFreq",               4,                                               "0x%x",   NULL        },
+  { "EnableParentState",        4,                                               "0x%x",   NULL        },
+  { "IsInteger",                1,                                               "%d",     NULL        },
+  { "IntegerEntryMethod",       8,                                               "0x%llx", NULL        },
+  { "RegisterEntryMethod",      sizeof (EFI_ACPI_6_3_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "ResidencyCounterRegister", sizeof (EFI_ACPI_6_3_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "UsageCounterRegister",     sizeof (EFI_ACPI_6_3_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "StateName",                16,                                              NULL,     PrintString },
+};
+
+/** A parser for ERiscVObjPciAddressMapInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVPciAddressMapInfoParser[] = {
+  { "SpaceCode",   1, "%d",     NULL },
+  { "PciAddress",  8, "0x%llx", NULL },
+  { "CpuAddress",  8, "0x%llx", NULL },
+  { "AddressSize", 8, "0x%llx", NULL },
+};
+
+/** A parser for ERiscVObjPciInterruptMapInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVPciInterruptMapInfoParser[] = {
+  { "PciBus",        1,                                 "0x%x", NULL },
+  { "PciDevice",     1,                                 "0x%x", NULL },
+  { "PciInterrupt",  1,                                 "0x%x", NULL },
+  { "IntcInterrupt", sizeof (CM_RISCV_GENERIC_INTERRUPT),
+    NULL, NULL, CmRiscVGenericInterruptParser,
+    ARRAY_SIZE (CmRiscVGenericInterruptParser) },
+};
+
+/** A parser for ERiscVObjCpcInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmRiscVCpcInfoParser[] = {
+  { "Revision",                              4,                                               "0x%lx", NULL },
+  { "HighestPerformanceBuffer",              sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "HighestPerformanceInteger",             4,                                               "0x%lx", NULL },
+  { "NominalPerformanceBuffer",              sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "NominalPerformanceInteger",             4,                                               "0x%lx", NULL },
+  { "LowestNonlinearPerformanceBuffer",      sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "LowestNonlinearPerformanceInteger",     4,                                               "0x%lx", NULL },
+  { "LowestPerformanceBuffer",               sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "LowestPerformanceInteger",              4,                                               "0x%lx", NULL },
+  { "GuaranteedPerformanceRegister",         sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "DesiredPerformanceRegister",            sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "MinimumPerformanceRegister",            sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "MaximumPerformanceRegister",            sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "PerformanceReductionToleranceRegister", sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "TimeWindowRegister",                    sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "CounterWraparoundTimeBuffer",           sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "CounterWraparoundTimeInteger",          4,                                               "0x%lx", NULL },
+  { "ReferencePerformanceCounterRegister",   sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "DeliveredPerformanceCounterRegister",   sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "PerformanceLimitedRegister",            sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "CPPCEnableRegister",                    sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "AutonomousSelectionEnableBuffer",       sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "AutonomousSelectionEnableInteger",      4,                                               "0x%lx", NULL },
+  { "AutonomousActivityWindowRegister",      sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "EnergyPerformancePreferenceRegister",   sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "ReferencePerformanceBuffer",            sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "ReferencePerformanceInteger",           4,                                               "0x%lx", NULL },
+  { "LowestFrequencyBuffer",                 sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "LowestFrequencyInteger",                4,                                               "0x%lx", NULL },
+  { "NominalFrequencyBuffer",                sizeof (EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE),
+    NULL, NULL, AcpiGenericAddressParser,
+    ARRAY_SIZE (AcpiGenericAddressParser) },
+  { "NominalFrequencyInteger",               4,                                               "0x%lx", NULL },
+};
+
+/** A parser for RiscV namespace objects.
+*/
+STATIC CONST CM_OBJ_PARSER_ARRAY  RiscVNamespaceObjectParser[] = {
+  { "ERiscVObjReserved",                     NULL,                                  0                                },
+  { "ERiscVObjCpuInfo",                      NULL,                                  0                                },
+  { "ERiscVObjPowerManagementProfileInfo",   CmRiscVPowerManagementProfileInfoParser,
+    ARRAY_SIZE (CmRiscVPowerManagementProfileInfoParser) },
+  { "ERiscVObjRintcInfo",                    CmRiscVRintcInfoParser,             ARRAY_SIZE (CmRiscVRintcInfoParser) },
+  { "ERiscVObjImsicInfo",                    CmRiscVImsicInfoParser,             ARRAY_SIZE (CmRiscVImsicInfoParser) },
+  { "ERiscVObjAplicInfo",                    CmRiscVAplicInfoParser,             ARRAY_SIZE (CmRiscVAplicInfoParser) },
+  { "ERiscVObjPlicInfo",                     CmRiscVPlicInfoParser,              ARRAY_SIZE (CmRiscVPlicInfoParser)  },
+  { "ERiscVObjIsaStringInfo",                NULL,                                  0                                },
+  { "ERiscVObjCmoInfo",                     NULL,                                  0                                },
+  { "ERiscVObjTimerInfo",                    NULL,                                  0                                },
+  { "ERiscVObjSerialConsolePortInfo",        CmRiscVSerialPortInfoParser,
+    ARRAY_SIZE (CmRiscVSerialPortInfoParser) },
+  { "ERiscVObjSerialDebugPortInfo",          CmRiscVSerialPortInfoParser,
+    ARRAY_SIZE (CmRiscVSerialPortInfoParser) },
+  { "ERiscVObjPciConfigSpaceInfo",           CmRiscVPciConfigSpaceInfoParser,
+    ARRAY_SIZE (CmRiscVPciConfigSpaceInfoParser) },
+  { "ERiscVObjHypervisorVendorIdentity",     CmRiscVHypervisorVendorIdParser,
+    ARRAY_SIZE (CmRiscVHypervisorVendorIdParser) },
+  { "ERiscVObjFixedFeatureFlags",            CmRiscVFixedFeatureFlagsParser,
+    ARRAY_SIZE (CmRiscVFixedFeatureFlagsParser) },
+  { "ERiscVObjProcHierarchyInfo",            CmRiscVProcHierarchyInfoParser,
+    ARRAY_SIZE (CmRiscVProcHierarchyInfoParser) },
+  { "ERiscVObjCmRef",                        CmRiscVObjRefParser,                     ARRAY_SIZE (CmRiscVObjRefParser)   },
+  { "ERiscVObjSerialPortInfo",               CmRiscVSerialPortInfoParser,
+    ARRAY_SIZE (CmRiscVSerialPortInfoParser) },
+  { "ERiscVObjLpiInfo",                      CmRiscVLpiInfoParser,
+    ARRAY_SIZE (CmRiscVLpiInfoParser) },
+  { "ERiscVObjPciAddressMapInfo",            CmRiscVPciAddressMapInfoParser,
+    ARRAY_SIZE (CmRiscVPciAddressMapInfoParser) },
+  { "ERiscVObjPciInterruptMapInfo",          CmRiscVPciInterruptMapInfoParser,
+    ARRAY_SIZE (CmRiscVPciInterruptMapInfoParser) },
+  { "ERiscVObjCpcInfo",                      CmRiscVCpcInfoParser,
+    ARRAY_SIZE (CmRiscVCpcInfoParser) },
+  { "ERiscVObjMax",                          NULL,                                  0                                },
+};
+
 /** A parser for EStdObjCfgMgrInfo.
 */
 STATIC CONST CM_OBJ_PARSER  StdObjCfgMgrInfoParser[] = {
@@ -1070,6 +1358,7 @@ ParseCmObjDesc (
   NameSpaceId = GET_CM_NAMESPACE_ID (CmObjDesc->ObjectId);
   ObjId       = GET_CM_OBJECT_ID (CmObjDesc->ObjectId);
 
+DEBUG((DEBUG_INFO, "%a: NameSpaceId = %d, ObjId = %d\n", __func__, NameSpaceId, ObjId));
   switch (NameSpaceId) {
     case EObjNameSpaceStandard:
       if (ObjId >= EStdObjMax) {
@@ -1098,6 +1387,20 @@ ParseCmObjDesc (
       }
 
       ParserArray = &ArmNamespaceObjectParser[ObjId];
+      break;
+    case EObjNameSpaceRiscV:
+      if (ObjId >= ERiscVObjMax) {
+        ASSERT (0);
+        return;
+      }
+
+      if (ObjId >= ARRAY_SIZE (RiscVNamespaceObjectParser)) {
+        DEBUG ((DEBUG_ERROR, "ObjId 0x%x is missing from the RiscVNamespaceObjectParser array\n", ObjId));
+        ASSERT (0);
+        return;
+      }
+
+      ParserArray = &RiscVNamespaceObjectParser[ObjId];
       break;
     default:
       // Not supported

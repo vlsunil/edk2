@@ -18,7 +18,7 @@
 #include <ConfigurationManagerObject.h>
 #include <ConfigurationManagerHelper.h>
 #include <Library/AcpiHelperLib.h>
-#include <Library/SsdtSerialPortFixupLib.h>
+#include <Library/ArmSsdtSerialPortFixupLib.h>
 #include <Protocol/ConfigurationManagerProtocol.h>
 
 /** ARM standard SSDT Serial Port Table Generator

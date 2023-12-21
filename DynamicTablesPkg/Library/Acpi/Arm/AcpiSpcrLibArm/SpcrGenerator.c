@@ -22,7 +22,7 @@
 #include <AcpiTableGenerator.h>
 #include <ConfigurationManagerObject.h>
 #include <ConfigurationManagerHelper.h>
-#include <Library/SsdtSerialPortFixupLib.h>
+#include <Library/ArmSsdtSerialPortFixupLib.h>
 #include <Library/TableHelperLib.h>
 #include <Protocol/ConfigurationManagerProtocol.h>
 
