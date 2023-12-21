@@ -25,10 +25,6 @@
   AslTables/Dsdt.asl
   ConfigurationManager.c
   ConfigurationManager.h
-  ConfigurationManagerDxe.inf
-
-[Packages.ARM]
-  ArmVirtPkg/ArmVirtPkg.dec
 
 [Packages]
   DynamicTablesPkg/DynamicTablesPkg.dec
@@ -54,4 +50,4 @@
   gFdtHobGuid
 
 [Depex]
-  gEdkiiPlatformHasAcpiGuid
+  TRUE

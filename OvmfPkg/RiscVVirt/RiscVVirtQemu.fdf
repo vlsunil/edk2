@@ -178,8 +178,12 @@ INF  OvmfPkg/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
 #
 INF  OvmfPkg/PlatformHasAcpiDtDxe/PlatformHasAcpiDtDxe.inf
 INF  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
-INF  MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
-INF  OvmfPkg/AcpiPlatformDxe/AcpiPlatformDxe.inf
+!ifdef DYNAMIC_TABLES_FRAMEWORK
+  !include DynamicTablesPkg/DynamicTables.fdf.inc
+  INF OvmfPkg/RiscVVirt/RiscVVirtCfgMgrDxe/ConfigurationManagerDxe.inf
+!else
+  INF  MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
+!endif
 
 #
 # PCI support
