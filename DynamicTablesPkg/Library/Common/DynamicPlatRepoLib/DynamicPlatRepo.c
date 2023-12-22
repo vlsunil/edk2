@@ -173,7 +173,7 @@ DynPlatRepoAddObject (
   }
 
   // Add to link list.
-  InsertTailList (&This->ArmCmObjList[ArmNamespaceObjId], &ObjNode->Link);
+  InsertTailList (&This->ArchCmObjList[ArmNamespaceObjId], &ObjNode->Link);
   This->ObjectCount += 1;
 
   if (Token != NULL) {
@@ -222,7 +222,7 @@ GroupCmObjNodes (
   Count    = 0;
   Size     = 0;
   CmObjId  = CREATE_CM_ARCH_OBJECT_ID (ArchObjIndex);
-  ListHead = &This->ArmCmObjList[ArchObjIndex];
+  ListHead = &This->ArchCmObjList[ArchObjIndex];
   Link     = GetFirstNode (ListHead);
 
   // Compute the total count and size of the CmObj in the list.
@@ -285,7 +285,7 @@ GroupCmObjNodes (
     Link  = GetNextNode (ListHead, Link);
   } // while
 
-  CmObjDesc           = &This->ArmCmObjArray[ArchObjIndex];
+  CmObjDesc           = &This->ArchCmObjArray[ArchObjIndex];
   CmObjDesc->ObjectId = CmObjId;
   CmObjDesc->Size     = Size;
   CmObjDesc->Count    = Count;
@@ -411,7 +411,7 @@ DynamicPlatRepoGetObject (
     return EFI_INVALID_PARAMETER;
   }
 
-  Desc = &This->ArmCmObjArray[ArmNamespaceObjId];
+  Desc = &This->ArchCmObjArray[ArmNamespaceObjId];
 
   // Nothing here.
   if (Desc->Count == 0) {
@@ -458,7 +458,7 @@ DynamicPlatRepoInit (
 
   // Initialise the CmObject List.
   for (Index = 0; Index < EArchObjMax; Index++) {
-    InitializeListHead (&Repo->ArmCmObjList[Index]);
+    InitializeListHead (&Repo->ArchCmObjList[Index]);
   }
 
   Repo->ObjectCount = 0;
@@ -498,14 +498,14 @@ DynamicPlatRepoShutdown (
   // Free the list of objects.
   for (Index = 0; Index < EArchObjMax; Index++) {
     // Free all the nodes with this object Id.
-    ListHead = &DynPlatRepo->ArmCmObjList[Index];
+    ListHead = &DynPlatRepo->ArchCmObjList[Index];
     while (!IsListEmpty (ListHead)) {
       FreeCmObjNode ((CM_OBJ_NODE *)GetFirstNode (ListHead));
     } // while
   } // for
 
   // Free the arrays.
-  CmObjDesc = DynPlatRepo->ArmCmObjArray;
+  CmObjDesc = DynPlatRepo->ArchCmObjArray;
   for (Index = 0; Index < EArchObjMax; Index++) {
     Data = CmObjDesc[Index].Data;
     if (Data != NULL) {
