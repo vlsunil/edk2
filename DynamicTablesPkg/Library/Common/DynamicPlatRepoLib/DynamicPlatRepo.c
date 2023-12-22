@@ -142,12 +142,12 @@ DynPlatRepoAddObject (
 
   // Check the CmObjDesc:
   //  - only Arm objects are supported for now.
-  //  - only EArmObjCmRef objects can be added as arrays.
+  //  - only EArchObjCmRef objects can be added as arrays.
   ArmNamespaceObjId = GET_CM_OBJECT_ID (CmObjDesc->ObjectId);
   if ((CmObjDesc->Size == 0)              ||
       (CmObjDesc->Count == 0)             ||
-      (ArmNamespaceObjId >= EArmObjMax)   ||
-      ((CmObjDesc->Count > 1)  && (ArmNamespaceObjId != EArmObjCmRef))  ||
+      (ArmNamespaceObjId >= EArchObjMax)   ||
+      ((CmObjDesc->Count > 1)  && (ArmNamespaceObjId != EArchObjCmRef))  ||
       (GET_CM_NAMESPACE_ID (CmObjDesc->ObjectId) != EObjNameSpaceArm))
   {
     ASSERT (0);
@@ -186,8 +186,8 @@ DynPlatRepoAddObject (
 /** Group lists of CmObjNode from the ArmNameSpace to one array.
 
   @param [in]  This         This dynamic platform repository.
-  @param [in]  ArmObjIndex  Index in EARM_OBJECT_ID
-                            (must be < EArmObjMax).
+  @param [in]  ArchObjIndex  Index in EARCH_OBJECT_ID
+                            (must be < EArchObjMax).
 
   @retval EFI_SUCCESS           Success.
   @retval EFI_INVALID_PARAMETER A parameter is invalid.
@@ -199,7 +199,7 @@ EFI_STATUS
 EFIAPI
 GroupCmObjNodes (
   IN  DYNAMIC_PLATFORM_REPOSITORY_INFO  *This,
-  IN  UINT32                            ArmObjIndex
+  IN  UINT32                            ArchObjIndex
   )
 {
   EFI_STATUS         Status;
@@ -213,7 +213,7 @@ GroupCmObjNodes (
   LIST_ENTRY         *Link;
 
   if ((This == NULL)  ||
-      (ArmObjIndex >= EArmObjMax))
+      (ArchObjIndex >= EArchObjMax))
   {
     ASSERT (0);
     return EFI_INVALID_PARAMETER;
@@ -221,8 +221,8 @@ GroupCmObjNodes (
 
   Count    = 0;
   Size     = 0;
-  CmObjId  = CREATE_CM_ARM_OBJECT_ID (ArmObjIndex);
-  ListHead = &This->ArmCmObjList[ArmObjIndex];
+  CmObjId  = CREATE_CM_ARCH_OBJECT_ID (ArchObjIndex);
+  ListHead = &This->ArmCmObjList[ArchObjIndex];
   Link     = GetFirstNode (ListHead);
 
   // Compute the total count and size of the CmObj in the list.
@@ -234,9 +234,9 @@ GroupCmObjNodes (
       return EFI_INVALID_PARAMETER;
     }
 
-    if ((CmObjDesc->Count != 1) && (ArmObjIndex != EArmObjCmRef)) {
+    if ((CmObjDesc->Count != 1) && (ArchObjIndex != EArchObjCmRef)) {
       // We expect each descriptor to contain an individual object.
-      // EArmObjCmRef objects are counted as groups, so +1 as well.
+      // EArchObjCmRef objects are counted as groups, so +1 as well.
       ASSERT (0);
       return EFI_INVALID_PARAMETER;
     }
@@ -285,7 +285,7 @@ GroupCmObjNodes (
     Link  = GetNextNode (ListHead, Link);
   } // while
 
-  CmObjDesc           = &This->ArmCmObjArray[ArmObjIndex];
+  CmObjDesc           = &This->ArmCmObjArray[ArchObjIndex];
   CmObjDesc->ObjectId = CmObjId;
   CmObjDesc->Size     = Size;
   CmObjDesc->Count    = Count;
@@ -316,7 +316,7 @@ DynamicPlatRepoFinalise (
   )
 {
   EFI_STATUS  Status;
-  UINTN       ArmObjIndex;
+  UINTN       ArchObjIndex;
 
   if ((This == NULL)  ||
       (This->RepoState != DynRepoTransient))
@@ -339,8 +339,8 @@ DynamicPlatRepoFinalise (
   //  - Convert the list of nodes to an array
   //    (the array is wrapped in a CmObjDesc).
   //  - Add the Token/CmObj binding to the token mapper.
-  for (ArmObjIndex = 0; ArmObjIndex < EArmObjMax; ArmObjIndex++) {
-    Status = GroupCmObjNodes (This, ArmObjIndex);
+  for (ArchObjIndex = 0; ArchObjIndex < EArchObjMax; ArchObjIndex++) {
+    Status = GroupCmObjNodes (This, ArchObjIndex);
     if (EFI_ERROR (Status)) {
       ASSERT (0);
       // Free the TokenMapper.
@@ -388,7 +388,7 @@ DynamicPlatRepoGetObject (
   }
 
   ArmNamespaceObjId = GET_CM_OBJECT_ID (CmObjectId);
-  if (ArmNamespaceObjId >= EArmObjMax) {
+  if (ArmNamespaceObjId >= EArchObjMax) {
     ASSERT (0);
     return EFI_INVALID_PARAMETER;
   }
@@ -405,8 +405,8 @@ DynamicPlatRepoGetObject (
     return Status;
   }
 
-  if (ArmNamespaceObjId == EArmObjCmRef) {
-    // EArmObjCmRef object must be requested using a valid token.
+  if (ArmNamespaceObjId == EArchObjCmRef) {
+    // EArchObjCmRef object must be requested using a valid token.
     ASSERT (0);
     return EFI_INVALID_PARAMETER;
   }
@@ -457,7 +457,7 @@ DynamicPlatRepoInit (
   }
 
   // Initialise the CmObject List.
-  for (Index = 0; Index < EArmObjMax; Index++) {
+  for (Index = 0; Index < EArchObjMax; Index++) {
     InitializeListHead (&Repo->ArmCmObjList[Index]);
   }
 
@@ -496,7 +496,7 @@ DynamicPlatRepoShutdown (
   }
 
   // Free the list of objects.
-  for (Index = 0; Index < EArmObjMax; Index++) {
+  for (Index = 0; Index < EArchObjMax; Index++) {
     // Free all the nodes with this object Id.
     ListHead = &DynPlatRepo->ArmCmObjList[Index];
     while (!IsListEmpty (ListHead)) {
@@ -506,7 +506,7 @@ DynamicPlatRepoShutdown (
 
   // Free the arrays.
   CmObjDesc = DynPlatRepo->ArmCmObjArray;
-  for (Index = 0; Index < EArmObjMax; Index++) {
+  for (Index = 0; Index < EArchObjMax; Index++) {
     Data = CmObjDesc[Index].Data;
     if (Data != NULL) {
       FreePool (Data);
