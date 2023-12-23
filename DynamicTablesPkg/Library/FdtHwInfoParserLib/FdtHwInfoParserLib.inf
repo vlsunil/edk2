@@ -50,6 +50,15 @@
 [Packages.ARM, Packages.AARCH64]
   ArmPkg/ArmPkg.dec
 
+[Sources.RISCV64]
+  RiscV/RiscVFdtHwInfoParser.c
+  RiscV/Apic/RiscVApicDispatcher.c
+  RiscV/Apic/RiscVApicDispatcher.h
+  RiscV/Apic/RiscVPlicAplicParser.c
+  RiscV/Apic/RiscVPlicAplicParser.h
+  RiscV/Apic/RiscVRintcParser.c
+  RiscV/Apic/RiscVRintcParser.h
+
 [Packages]
   DynamicTablesPkg/DynamicTablesPkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
