@@ -52,3 +52,16 @@ FdtGetInterruptFlags (
 
   return AcpiIrqFlags;
 }
+
+EFI_STATUS
+EFIAPI
+FdtGetIntcAddressCells (
+  IN  CONST VOID *Fdt,
+  IN        INT32 Node,
+  OUT       INT32 *AddressCells, OPTIONAL
+  OUT       INT32     *SizeCells       OPTIONAL
+  )
+{
+  *AddressCells = 0;
+  return EFI_SUCCESS;
+}
