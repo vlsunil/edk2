@@ -22,6 +22,9 @@
 [Sources.ARM, Sources.AARCH64]
   ArmFadtGenerator.c
 
+[Sources.RISCV64]
+  RiscVFadtGenerator.c
+
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
