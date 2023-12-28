@@ -51,6 +51,7 @@
   ArmPkg/ArmPkg.dec
 
 [Sources.RISCV64]
+  RiscV/RiscVFdtUtility.c
   RiscV/RiscVFdtHwInfoParser.c
   RiscV/Apic/RiscVApicDispatcher.c
   RiscV/Apic/RiscVApicDispatcher.h

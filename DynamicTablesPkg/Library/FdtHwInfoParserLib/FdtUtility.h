@@ -65,6 +65,8 @@
 #define IRQ_TYPE_OFFSET    (0U)
 #define IRQ_NUMBER_OFFSET  (1U)
 #define IRQ_FLAGS_OFFSET   (2U)
+#define RISCV_IRQ_NUMBER_OFFSET  (0U)
+#define RISCV_IRQ_FLAGS_OFFSET   (1U)
 
 /** Get the interrupt Id of an interrupt described in a fdt.
 
