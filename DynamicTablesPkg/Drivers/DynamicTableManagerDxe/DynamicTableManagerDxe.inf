@@ -27,6 +27,9 @@
 [Sources.ARM, Sources.AARCH64]
   ArmDynamicTableManagerDxe.c
 
+[Sources.RISCV64]
+  RiscVDynamicTableManagerDxe.c
+
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
