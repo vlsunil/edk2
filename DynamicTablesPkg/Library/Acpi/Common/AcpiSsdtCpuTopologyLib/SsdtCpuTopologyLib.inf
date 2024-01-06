@@ -26,6 +26,9 @@
 [Packages.ARM, Packages.AARCH64]
   ArmPlatformPkg/ArmPlatformPkg.dec
 
+[Sources.RISCV64]
+  RiscVSsdtCpuTopologyGenerator.c
+
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
