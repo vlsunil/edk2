@@ -158,7 +158,8 @@ typedef enum StdAcpiTableId {
 /** The Creator ID for the ACPI tables generated using
   the standard ACPI table generators.
 */
-#define TABLE_GENERATOR_CREATOR_ID_ARM  SIGNATURE_32('A', 'R', 'M', 'H')
+#define TABLE_GENERATOR_CREATOR_ID_ARM    SIGNATURE_32('A', 'R', 'M', 'H')
+#define TABLE_GENERATOR_CREATOR_ID_RISCV  SIGNATURE_32('R', 'S', 'C', 'V')
 
 /** A macro to initialise the common header part of EFI ACPI tables as
     defined by the EFI_ACPI_DESCRIPTION_HEADER structure.
