@@ -669,6 +669,91 @@ STATIC CONST CM_OBJ_PARSER  CmArchEtInfo[] = {
   { "EtType", sizeof (ARM_ET_TYPE), "0x%x", NULL }
 };
 
+/** A parser for EArchObjRintcInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmArchRintcInfoParser[] = {
+  { "Version",          1,                        "0x%x",   NULL },
+  { "Reserved",         1,                        "0x%x",   NULL },
+  { "Flags",            4,                        "0x%x",   NULL },
+  { "HartId",           8,                        "0x%llx", NULL },
+  { "AcpiProcessorUid", 4,                        "0x%x",   NULL },
+  { "ExtIntCId",        4,                        "0x%x",   NULL },
+  { "ImsicBaseAddress", 8,                        "0x%llx", NULL },
+  { "ImsicSize",        4,                        "0x%llx", NULL },
+  { "CpcToken",         sizeof (CM_OBJECT_TOKEN), "0x%p",   NULL },
+  { "EtToken",          sizeof (CM_OBJECT_TOKEN), "0x%p",   NULL }
+};
+
+/** A parser for EArchObjImsicInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmArchImsicInfoParser[] = {
+  { "Version",         1, "0x%x", NULL },
+  { "Reserved",        1, "0x%x", NULL },
+  { "Flags",           4, "0x%x", NULL },
+  { "NumSmodeIds",     2, "0x%x", NULL },
+  { "NumGmodeIds",     2, "0x%x", NULL },
+  { "GuestIndexBits",  1, "0x%x", NULL },
+  { "HartIndexBits",   1, "0x%x", NULL },
+  { "GroupIndexBits",  1, "0x%x", NULL },
+  { "GroupIndexShift", 1, "0x%x", NULL },
+};
+
+/** A parser for EArchObjAplicInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmArchAplicInfoParser[] = {
+  { "Version",      1, "0x%x",  NULL },
+  { "AplicId",      1, "0x%x",  NULL },
+  { "Flags",        4, "0x%x",  NULL },
+  { "HardwareId",   8, "0x%lx", NULL },
+  { "NumIdcs",      2, "0x%x",  NULL },
+  { "NumSources",   2, "0x%x",  NULL },
+  { "GsiBase",      4, "0x%x",  NULL },
+  { "AplicAddress", 8, "0x%lx", NULL },
+  { "AplicSize",    4, "0x%x",  NULL },
+};
+
+/** A parser for EArchVObjPlicInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmArchPlicInfoParser[] = {
+  { "Version",     1, "0x%x",  NULL },
+  { "PlicId",      1, "0x%x",  NULL },
+  { "HardwareId",  8, "0x%lx", NULL },
+  { "NumIrqs",     2, "0x%x",  NULL },
+  { "MaxPriority", 2, "0x%x",  NULL },
+  { "Flags",       4, "0x%x",  NULL },
+  { "PlicSize",    4, "0x%x",  NULL },
+  { "PlicAddress", 8, "0x%lx", NULL },
+  { "GsiBase",     4, "0x%x",  NULL },
+};
+
+/** A parser for EArchVObjIsaStringInfo.
+STATIC CONST CM_OBJ_PARSER  CmArchIsaStringInfoParser[] = {
+  { "ISA Length",                    2,                        "0x%x",   NULL },
+  { "ISA String",        sizeof (CHAR8 *),             NULL,   PrintStringPtr },
+};
+*/
+
+/** A parser for EArchVObjCmoInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmArchCmoInfoParser[] = {
+  { "CBOM Block Size", 1, "0x%x", NULL },
+  { "CBOP Block Size", 1, "0x%x", NULL },
+  { "CBOZ Block Size", 1, "0x%x", NULL },
+};
+
+/** A parser for EArchVObjMmuInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmArchMmuInfoParser[] = {
+  { "MMU Type", 1, "0x%x", NULL },
+};
+
+/** A parser for EArchVObjTimerInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmArchTimerInfoParser[] = {
+  { "Timer Can Not Wakeup CPU", 1, "0x%x",  NULL },
+  { "Timer Base Frequencey",    8, "0x%lx", NULL },
+};
+
 /** A parser for Arm namespace objects.
 */
 STATIC CONST CM_OBJ_PARSER_ARRAY  ArmNamespaceObjectParser[] = {
@@ -767,6 +852,22 @@ STATIC CONST CM_OBJ_PARSER_ARRAY  ArmNamespaceObjectParser[] = {
     ARRAY_SIZE (CmArchPccSubspaceType5InfoParser) },
   { "EArchObjEtInfo",                       CmArchEtInfo,
     ARRAY_SIZE (CmArchEtInfo) },
+  { "EArchObjRintcInfo",                    CmArchRintcInfoParser,
+    ARRAY_SIZE (CmArchRintcInfoParser) },
+  { "EArchObjImsicInfo",                    CmArchImsicInfoParser,
+    ARRAY_SIZE (CmArchImsicInfoParser) },
+  { "EArchObjAplicInfo",                    CmArchAplicInfoParser,
+    ARRAY_SIZE (CmArchAplicInfoParser) },
+  { "EArchObjPlicInfo",                     CmArchPlicInfoParser,
+    ARRAY_SIZE (CmArchPlicInfoParser) },
+  { "EArchObjIsaStringInfo",                NULL,
+    0 },
+  { "EArchObjCmoInfo",                      CmArchCmoInfoParser,
+    ARRAY_SIZE (CmArchCmoInfoParser) },
+  { "EArchObjMmuInfo",                      CmArchMmuInfoParser,
+    ARRAY_SIZE (CmArchMmuInfoParser) },
+  { "EArchObjTimerInfo",                    CmArchTimerInfoParser,
+    ARRAY_SIZE (CmArchTimerInfoParser) },
   { "EArchObjMax",                          NULL,                                   0                                 },
 };
 
