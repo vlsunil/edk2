@@ -72,6 +72,14 @@ typedef enum ArchObjectID {
   EArchObjPccSubspaceType4Info,                                 ///< 47 - Pcc Subspace Type 4 Info
   EArchObjPccSubspaceType5Info,                                 ///< 48 - Pcc Subspace Type 5 Info
   EArchObjEtInfo,                                               ///< 49 - Embedded Trace Extension/Module Info
+  EArchObjRintcInfo,                                            ///< 50 - RISC-V RINTC Info
+  EArchObjImsicInfo,                                            ///< 51 - RISC-V IMSIC Info
+  EArchObjAplicInfo,                                            ///< 52 - RISC-V APLIC Frame Info
+  EArchObjPlicInfo,                                             ///< 53 - RISC-V PLIC Info
+  EArchObjIsaStringInfo,                                        ///< 54 - RISC-V ISA String Info
+  EArchObjCmoInfo,                                              ///< 55 - RISC-V CMO Info
+  EArchObjMmuInfo,                                              ///< 56 - RISC-V MMU Type Info
+  EArchObjTimerInfo,                                            ///< 57 - RISC-V Timer Type Info
   EArchObjMax
 } EARCH_OBJECT_ID;
 
@@ -1326,6 +1334,199 @@ typedef enum ArmEtType {
 typedef struct CmArchEtInfo {
   ARM_ET_TYPE    EtType;
 } CM_ARCH_ET_INFO;
+
+/** A structure that describes the
+    RINTC for the Platform.
+
+    ID: EArchObjRintcInfo
+*/
+typedef struct CmArchRintcInfo {
+  /// Version
+  UINT8              Version;
+
+  /// Reserved1
+  UINT8              Reserved1;
+
+  /** The flags field as described by the RINTC structure
+      in the ACPI Specification.
+  */
+  UINT32             Flags;
+
+  // Hart ID
+  UINT64             HartId;
+
+  /** The ACPI Processor UID. This must match the
+      _UID of the CPU Device object information described
+      in the DSDT/SSDT for the CPU.
+  */
+  UINT32             AcpiProcessorUid;
+
+  // External Interrupt Controller ID
+  UINT32             ExtIntCId;
+
+  // IMSIC Base address
+  UINT64             ImsicBaseAddress;
+
+  // IMSIC Size
+  UINT32             ImsicSize;
+
+  /** Optional field: Reference Token for the Cpc info of this processor.
+      i.e. a token referencing a CM_ARCH_CPC_INFO object.
+  */
+  CM_OBJECT_TOKEN    CpcToken;
+
+  /** Optional field: Reference Token for the Embedded Trace device info for
+      this processing element.
+      i.e. a token referencing a CM_ARCH_ET_INFO object.
+  */
+  CM_OBJECT_TOKEN    EtToken;
+} CM_ARCH_RINTC_INFO;
+
+/** A structure that describes the
+    IMSIC information for the Platform.
+
+    ID: EArchObjImsicInfo
+*/
+typedef struct CmArchImsicInfo {
+  /// Version
+  UINT8     Version;
+
+  /// Reserved1
+  UINT8     Reserved1;
+
+  /** The flags field as described by the IMSIC structure
+      in the ACPI Specification.
+  */
+  UINT32    Flags;
+
+  // Number of S-mode Interrupt Identities
+  UINT16    NumIds;
+
+  // Number of guest mode Interrupt Identities
+  UINT16    NumGuestIds;
+
+  // Guest Index Bits
+  UINT8     GuestIndexBits;
+
+  // Hart Index Bits
+  UINT8     HartIndexBits;
+
+  // Group Index Bits
+  UINT8     GroupIndexBits;
+
+  // Group Index Shift
+  UINT8     GroupIndexShift;
+} CM_ARCH_IMSIC_INFO;
+
+/** A structure that describes the
+    APLIC information for the Platform.
+
+    ID: EArchObjAplicInfo
+*/
+typedef struct CmArchAplicInfo {
+  /// Version
+  UINT8     Version;
+
+  /// APLIC ID
+  UINT8     AplicId;
+
+  /** The flags field as described by the APLIC structure
+      in the ACPI Specification.
+  */
+  UINT32    Flags;
+
+  /// Hardware ID
+  UINT8     HwId[8];
+
+  // Number of IDCs
+  UINT16    NumIdcs;
+
+  // Number of Interrupt Sources
+  UINT16    NumSources;
+
+  /// GSI Base
+  UINT32    GsiBase;
+
+  /// APLIC Address
+  UINT64    AplicAddress;
+
+  /// APLIC size
+  UINT32    AplicSize;
+} CM_ARCH_APLIC_INFO;
+
+/** A structure that describes the
+    PLIC information for the Platform.
+
+    ID: EArchObjPlicInfo
+*/
+typedef struct CmArchPlicInfo {
+  /// Version
+  UINT8     Version;
+
+  /// PLIC ID
+  UINT8     PlicId;
+
+  /// Hardware ID
+  UINT8     HwId[8];
+
+  // Number of Interrupt Sources
+  UINT16    NumSources;
+
+  // Max Priority
+  UINT16    MaxPriority;
+
+  /** The flags field as described by the PLIC structure
+      in the ACPI Specification.
+  */
+  UINT32    Flags;
+
+  /// PLIC Size
+  UINT32    PlicSize;
+
+  /// PLIC Address
+  UINT64    PlicAddress;
+
+  /// GSI Base
+  UINT32    GsiBase;
+} CM_ARCH_PLIC_INFO;
+
+/** A structure that describes the
+    ISA string for the Platform.
+
+    ID: EArchObjIsaStringInfo
+*/
+typedef struct CmArchIsaStringInfo {
+  UINT16    Length;
+
+  CHAR8     *IsaString;
+} CM_ARCH_ISA_STRING_NODE;
+
+/** A structure that describes the
+    CMO for the Platform.
+
+    ID: EArchObjCmoInfo
+*/
+typedef struct CmArchCmoInfo {
+  /// CbomBlockSize
+  UINT8    CbomBlockSize;
+
+  /// CbopBlockSize
+  UINT8    CbopBlockSize;
+
+  /// CbozBlockSize
+  UINT8    CbozBlockSize;
+} CM_ARCH_CMO_NODE;
+
+/** A structure that describes the
+    Timer for the Platform.
+
+    ID: EArchObjTimerInfo
+*/
+typedef struct CmArchTimerInfo {
+  UINT8     TimerCannotWakeCpu;
+
+  UINT64    TimeBaseFrequency;
+} CM_ARCH_TIMER_INFO;
 
 #pragma pack()
 
