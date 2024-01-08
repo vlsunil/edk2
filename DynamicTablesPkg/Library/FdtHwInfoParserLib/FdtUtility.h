@@ -2,6 +2,8 @@
   Flattened device tree utility.
 
   Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2024, Ventana Micro Systems Inc. All rights reserved.<BR>
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
   @par Reference(s):
@@ -62,9 +64,11 @@
 #define DT_SPI_IRQ  (0U)
 #define DT_IRQ_IS_EDGE_TRIGGERED(x)  ((((x) & (BIT0 | BIT1)) != 0))
 #define DT_IRQ_IS_ACTIVE_LOW(x)      ((((x) & (BIT1 | BIT3)) != 0))
-#define IRQ_TYPE_OFFSET    (0U)
-#define IRQ_NUMBER_OFFSET  (1U)
-#define IRQ_FLAGS_OFFSET   (2U)
+#define IRQ_TYPE_OFFSET          (0U)
+#define IRQ_NUMBER_OFFSET        (1U)
+#define IRQ_FLAGS_OFFSET         (2U)
+#define RISCV_IRQ_NUMBER_OFFSET  (0U)
+#define RISCV_IRQ_FLAGS_OFFSET   (1U)
 
 /** Get the interrupt Id of an interrupt described in a fdt.
 
