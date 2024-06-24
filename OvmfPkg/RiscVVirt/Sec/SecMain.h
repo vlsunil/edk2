@@ -33,6 +33,18 @@
 #include <Register/RiscV64/RiscVImpl.h>
 
 /**
+  Auto-generated function that calls the library constructors for all of the module's
+  dependent libraries.  This function must be called by the SEC Core once a stack has
+  been established.
+
+**/
+VOID
+EFIAPI
+ProcessLibraryConstructorList (
+  VOID
+  );
+
+/**
   Entry point to the C language phase of SEC. After the SEC assembly
   code has initialized some temporary memory and set up the stack,
   the control is transferred to this function.
