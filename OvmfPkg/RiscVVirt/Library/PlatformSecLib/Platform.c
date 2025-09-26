@@ -36,6 +36,30 @@ AddIoMemoryBaseSizeHob (
     );
 }
 
+STATIC
+VOID
+AddSharedMemoryBaseSizeHob (
+  EFI_PHYSICAL_ADDRESS  MemoryBase,
+  UINT64                MemorySize
+  )
+{
+  /* Align to EFI_PAGE_SIZE */
+  MemorySize = ALIGN_VALUE (MemorySize, EFI_PAGE_SIZE);
+  BuildResourceDescriptorHob (
+    EFI_RESOURCE_SYSTEM_MEMORY,
+    EFI_RESOURCE_ATTRIBUTE_PRESENT     |
+    EFI_RESOURCE_ATTRIBUTE_INITIALIZED |
+    EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE |
+    (EFI_RESOURCE_ATTRIBUTE_WRITE_COMBINEABLE |
+     EFI_RESOURCE_ATTRIBUTE_WRITE_THROUGH_CACHEABLE |
+     EFI_RESOURCE_ATTRIBUTE_WRITE_BACK_CACHEABLE
+    ) |
+    EFI_RESOURCE_ATTRIBUTE_TESTED,
+    MemoryBase,
+    MemorySize
+    );
+}
+
 /**
   Populate IO resources from FDT that not added to GCD by its
   driver in the DXE phase.
@@ -59,7 +83,11 @@ PopulateIoResources (
     Reg = (UINT64 *)FdtGetProp (FdtBase, Node, "reg", &LenP);
     if (Reg) {
       ASSERT (LenP == (2 * sizeof (UINT64)));
-      AddIoMemoryBaseSizeHob (SwapBytes64 (Reg[0]), SwapBytes64 (Reg[1]));
+      if (AsciiStrnCmp (Compatible, "riscv,rpmi-mm", AsciiStrLen ("riscv,rpmi-mm")) == 0) {
+        AddSharedMemoryBaseSizeHob (SwapBytes64 (Reg[0]), SwapBytes64 (Reg[1]));
+      } else {
+        AddIoMemoryBaseSizeHob (SwapBytes64 (Reg[0]), SwapBytes64 (Reg[1]));
+      }
     }
 
     Node = FdtNodeOffsetByCompatible (FdtBase, Node, Compatible);
@@ -117,6 +145,7 @@ PlatformInitialization (
   PopulateIoResources (Base, "ns16550a");
   PopulateIoResources (Base, "qemu,fw-cfg-mmio");
   PopulateIoResources (Base, "virtio,mmio");
+  PopulateIoResources (Base, "riscv,rpmi-mm");
 
   return EFI_SUCCESS;
 }
