@@ -17,6 +17,7 @@
 #include <Library/PcdLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiRuntimeServicesTableLib.h>
+#include <Library/UefiRuntimeLib.h>
 #include <Library/DxeRiscvMpxy.h>
 
 #include <Protocol/MmCommunication2.h>
@@ -30,6 +31,9 @@
 //
 STATIC RISCV_SMM_MEM_REGION_DESCRIPTOR  mNsCommBuffMemRegion;
 
+// Notification event when virtual address map is set.
+STATIC EFI_EVENT  mSetVirtualAddressMapEvent;
+
 //
 // Handle to install the MM Communication Protocol
 //
@@ -39,6 +43,48 @@ STATIC EFI_HANDLE  mMmCommunicateHandle;
 // The MM Channel ID, the value should be loaded from device tree
 //
 STATIC UINT32 mMmChannelId = 0;
+
+/**
+  Notification callback on SetVirtualAddressMap event.
+
+  This function notifies the MM communication protocol interface on
+  SetVirtualAddressMap event and converts pointers used in this driver
+  from physical to virtual address.
+
+  @param  Event          SetVirtualAddressMap event.
+  @param  Context        A context when the SetVirtualAddressMap triggered.
+
+  @retval EFI_SUCCESS    The function executed successfully.
+  @retval Other          Some error occurred when executing this function.
+**/
+
+STATIC
+VOID
+EFIAPI
+NotifySetVirtualAddressMap (
+  IN EFI_EVENT  Event,
+  IN VOID       *Context
+  )
+{
+  EFI_STATUS  Status;
+
+DEBUG((DEBUG_INFO, "%a: Called\n", __func__));
+  //Status = gRT->ConvertPointer (
+  Status = EfiConvertPointer (
+                  EFI_OPTIONAL_PTR,
+                  (VOID **)&mNsCommBuffMemRegion.VirtualBase
+                  );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "NotifySetVirtualAddressMap():"
+      " Unable to convert MM runtime pointer. Status:0x%r\n",
+      Status
+      ));
+  }
+
+  //SbiMpxyConvertChannelMemory (mMmChannelId);
+}
 
 /**
   Communicates with a registered handler.
@@ -404,6 +450,8 @@ MmCommunication2Initialize (
   IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
+  EFI_PHYSICAL_ADDRESS shmem_base;
+  UINTN shmem_size_pages;
   EFI_STATUS  Status;
   UINTN       Index;
 
@@ -422,6 +470,27 @@ MmCommunication2Initialize (
 
   ASSERT (mNsCommBuffMemRegion.Length != 0);
 
+  shmem_base = mNsCommBuffMemRegion.PhysicalBase;
+  shmem_size_pages = mNsCommBuffMemRegion.Length / EFI_PAGE_SIZE;
+
+  /*
+   * Set mapping for the MM shared memory as Runtime memory
+   */
+  Status = gBS->AllocatePages (
+                    AllocateAddress,
+                    EfiRuntimeServicesData,
+                    shmem_size_pages,
+                    &shmem_base
+                    );
+  if (EFI_ERROR (Status)) {
+  DEBUG ((
+    DEBUG_ERROR,
+    "MmCommunicateInitialize: "
+    "Failed to allocate RT memory for shmem, Status=0x%lx\n", Status
+    ));
+  goto ReturnErrorStatus;
+  }
+
   // Install the communication protocol
   Status = gBS->InstallProtocolInterface (
                   &mMmCommunicateHandle,
@@ -437,6 +506,18 @@ MmCommunication2Initialize (
       ));
     goto CleanAddedMemorySpace;
   }
+
+  // Register notification callback when virtual address is associated
+  // with the physical address.
+  // Create a Set Virtual Address Map event.
+  Status = gBS->CreateEvent (
+                  EVT_SIGNAL_VIRTUAL_ADDRESS_CHANGE,
+                  TPL_NOTIFY,
+                  NotifySetVirtualAddressMap,
+                  NULL,
+                  &mSetVirtualAddressMapEvent
+                  );
+  ASSERT_EFI_ERROR (Status);
 
   for (Index = 0; Index < ARRAY_SIZE (mGuidedEventGuid); Index++) {
     Status = gBS->CreateEventEx (
@@ -472,5 +553,6 @@ CleanAddedMemorySpace:
          mNsCommBuffMemRegion.Length
          );
 
+ReturnErrorStatus:
   return EFI_INVALID_PARAMETER;
 }

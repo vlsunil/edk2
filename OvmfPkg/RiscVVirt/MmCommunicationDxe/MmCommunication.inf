@@ -41,6 +41,7 @@
   UefiDriverEntryPoint
   RiscVSbiLib
   DxeRiscvMpxyLib
+  UefiRuntimeLib
 
 [Protocols]
   gEfiMmCommunication2ProtocolGuid              ## PRODUCES
