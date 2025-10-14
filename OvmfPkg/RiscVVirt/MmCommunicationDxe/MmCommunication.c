@@ -199,6 +199,10 @@ MmCommunication2Communicate (
   // Copy Communication Payload
   CopyMem ((VOID *)mNsCommBuffMemRegion.VirtualBase, CommBufferVirtual, BufferSize);
 
+  if (SbiMpxyChannelOpen (mMmChannelId) != EFI_SUCCESS) {
+    return EFI_NOT_READY;;
+  }
+
   // MM_COMM_INPUT_DATA_OFFSET - MM always uses entire SM
   //CommunicateArgs.Arg0 = 0;
 
@@ -207,6 +211,7 @@ MmCommunication2Communicate (
 		(VOID *)&CommunicateArgs, sizeof (RISCV_SMM_MSG_COMM_ARGS),
 		(VOID *)&CommunicateArgs, &MmRespLen);
   if (EFI_ERROR (Status) || (0 == MmRespLen)) {
+    SbiMpxyChannelClose (mMmChannelId);
     return Status;
   }
 
@@ -248,6 +253,7 @@ MmCommunication2Communicate (
       ASSERT (0);
   }
 
+  SbiMpxyChannelClose (mMmChannelId);
   return Status;
 }
 
