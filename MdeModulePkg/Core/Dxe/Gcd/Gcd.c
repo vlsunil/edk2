@@ -1006,6 +1006,11 @@ CoreConvertSpace (
         }
 
         Entry->Attributes = Attributes;
+        CoreUpdateMemoryAttributes (
+          BaseAddress,
+          RShiftU64 (Length, EFI_PAGE_SHIFT),
+          Attributes
+          );
         break;
       //
       // Set capabilities operation
