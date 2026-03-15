@@ -86,11 +86,6 @@
   GCC:*_*_RISCV64_GENFW_FLAGS    = --keepexceptiontable
 !endif
 
-[BuildOptions.common.EDKII.DXE_RUNTIME_DRIVER]
-  GCC:  *_*_*_DLINK_FLAGS = -z common-page-size=0x1000
-  MSFT: *_*_*_DLINK_FLAGS = /ALIGN:4096
-  CLANGPDB: *_*_*_DLINK_FLAGS = /ALIGN:4096
-
 ################################################################################
 #
 # Library Class section - list of all Library Classes needed by this Platform.
