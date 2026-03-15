@@ -971,6 +971,7 @@ CoreConvertSpace (
           Entry->Capabilities = Capabilities | EFI_MEMORY_RUNTIME;
         }
 
+	Entry->Attributes = Entry->Capabilities & EFI_CACHE_ATTRIBUTE_MASK;
         break;
       case GCD_ADD_IO_OPERATION:
         Entry->GcdIoType = GcdIoType;
@@ -1006,11 +1007,18 @@ CoreConvertSpace (
         }
 
         Entry->Attributes = Attributes;
-        CoreUpdateMemoryAttributes (
-          BaseAddress,
-          RShiftU64 (Length, EFI_PAGE_SHIFT),
-          Attributes
-          );
+        // Only SystemMemory and MoreReliable memory is in gMemoryMap
+        // so only attempt to update the attributes there if this is
+        // a relevant GCD type
+        if ((Entry->GcdMemoryType == EfiGcdMemoryTypeSystemMemory) ||
+            (Entry->GcdMemoryType == EfiGcdMemoryTypeMoreReliable))
+        {
+          CoreUpdateMemoryAttributes (
+            BaseAddress,
+            RShiftU64 (Length, EFI_PAGE_SHIFT),
+            Attributes
+            );
+        }
         break;
       //
       // Set capabilities operation
